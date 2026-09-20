@@ -44,8 +44,18 @@ stars <- stars |>
       "</div>",
       "<div style='margin-top: 8px; padding: 8px 10px; background: #e3f2fd; border-left: 3px solid #1565c0; border-radius: 4px; font-size: 13px;'>",
       "<strong>🔭 Visible from Planetary Systems:</strong><br><span style='color: #1a237e;'>", visible_from, "</span>",
+      "</div>",
+      "<div style='margin-top: 8px; padding: 10px; background: #fff3e0; border-left: 3px solid #e65100; border-radius: 4px; font-size: 13px;'>",
+      "<div style='display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px; color: #b71c1c;'>",
+      "<span>💥 Closeness to Exploding:</span><span>", explosion_pct, "%</span>",
+      "</div>",
+      "<div style='width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 5px;'>",
+      "<div style='width: ", explosion_pct, "%; height: 100%; background: linear-gradient(90deg, #4caf50, #ffeb3b, #f44336);'></div>",
+      "</div>",
+      "<span style='color: #bf360c; font-size: 12px;'>", explosion_desc, "</span>",
       "</div>"
-    )
+    ),
+    hover_label = paste0("💥 Closeness to Exploding: ", explosion_pct, "%\n(Click to reveal star)")
   )
 
 ring_shapes <- list()
@@ -70,7 +80,8 @@ fig <- plot_ly() |>
     type = "scatter",
     mode = "markers",
     name = "Stars without Known Planets",
-    hoverinfo = "none",
+    hoverinfo = "text",
+    hovertext = ~hover_label,
     customdata = ~summary_html,
     marker = list(
       color = "#78909c",
@@ -86,7 +97,8 @@ fig <- plot_ly() |>
     type = "scatter",
     mode = "markers",
     name = "Stars with Solar/Planetary Systems",
-    hoverinfo = "none",
+    hoverinfo = "text",
+    hovertext = ~hover_label,
     customdata = ~summary_html,
     marker = list(
       color = "#00e676",
