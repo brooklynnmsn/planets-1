@@ -1,5 +1,9 @@
 ---
 title: "Planets & Nearby Stars"
+execute:
+  echo: false
+  warning: false
+  message: false
 format:
   html:
     css: styles.css
@@ -8,138 +12,89 @@ format:
 ::: {.columns}
 ::: {.column width="68%"}
 ```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
 library(tidyverse)
 library(plotly)
 library(htmlwidgets)
 
-# Expanded dataset of nearby stars to Earth
-stars_data <- tibble(
-  name = c(
-    "Earth (Sun)", "Proxima Centauri", "Alpha Centauri A", "Alpha Centauri B",
-    "Barnard's Star", "Wolf 359", "Lalande 21185", "Sirius A", 
-    "Sirius B", "Luyten 726-8", "Ross 154", "Ross 248", 
-    "Epsilon Eridani", "Lacaille 9352", "Ross 128", "EZ Aquarii", 
-    "61 Cygni A", "61 Cygni B", "Procyon A", "Procyon B", 
-    "Struve 2398 A", "Groombridge 34 A", "DX Cancri", "Tau Ceti", 
-    "Teegarden's Star", "Kapteyn's Star"
-  ),
-  dist_ly = c(
-    0, 4.25, 4.37, 4.37, 
-    5.96, 7.86, 8.31, 8.66, 
-    8.66, 8.73, 9.70, 10.30, 
-    10.50, 10.74, 11.01, 11.27, 
-    11.41, 11.41, 11.46, 11.46, 
-    11.52, 11.62, 11.83, 11.91, 
-    12.50, 12.83
-  ),
-  angle_deg = c(
-    0, 42, 54, 60, 
-    105, 142, 172, 210, 
-    215, 240, 275, 305, 
-    325, 290, 160, 260, 
-    345, 350, 125, 130, 
-    15, 35, 150, 80, 
-    70, 225
-  ),
-  type = c(
-    "G-type (Sun / Earth)", "Red Dwarf (M-type)", "Yellow Dwarf (G-type)", "Orange Dwarf (K-type)",
-    "Red Dwarf (M-type)", "Red Dwarf (M-type)", "Red Dwarf (M-type)", "White Star (A-type)",
-    "White Dwarf (DA-type)", "Binary Flare Red Dwarf", "Red Dwarf (M-type)", "Red Dwarf (M-type)",
-    "Orange Dwarf (K-type)", "Red Dwarf (M-type)", "Red Dwarf (M-type)", "Triple Red Dwarf System",
-    "Orange Dwarf (K-type)", "Orange Dwarf (K-type)", "White-Yellow Subgiant (F-type)", "White Dwarf",
-    "Red Dwarf (M-type)", "Red Dwarf (M-type)", "Flare Star Red Dwarf", "Yellow Dwarf (G-type)",
-    "Ultra-cool Red Dwarf", "Red Subdwarf (Halo star)"
-  ),
-  image = c(
-    "images/sun.jpg", "images/proxima.jpg", "images/alpha_centauri.jpg", "images/alpha_centauri.jpg",
-    "images/barnard.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg", "images/sirius.jpg",
-    "images/sirius.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg",
-    "images/orange_dwarf.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg",
-    "images/orange_dwarf.jpg", "images/orange_dwarf.jpg", "images/procyon.jpg", "images/procyon.jpg",
-    "images/red_dwarf.jpg", "images/red_dwarf.jpg", "images/red_dwarf.jpg", "images/orange_dwarf.jpg",
-    "images/red_dwarf.jpg", "images/red_dwarf.jpg"
-  ),
-  details = c(
-    "Our home planetary system and solar neighborhood center.",
-    "The closest known star to the Sun. Hosts the Earth-sized exoplanet Proxima b.",
-    "Very similar in mass and luminosity to our Sun; primary star of Alpha Centauri.",
-    "Companion in the Alpha Centauri system; slightly cooler orange dwarf.",
-    "Known for having the highest proper motion across the night sky of any star.",
-    "A very faint, low-mass red dwarf star famous in science fiction lore.",
-    "One of the brightest red dwarf stars visible from Earth (in Ursa Major).",
-    "The brightest star visible in Earth's night sky ('the Dog Star').",
-    "The famous faint white dwarf companion tightly orbiting Sirius A.",
-    "A pair of active red dwarfs known for intense, unpredictable stellar flares.",
-    "A young, highly magnetic red dwarf flare star in Sagittarius.",
-    "Will briefly become our closest neighboring star in about 33,000 years.",
-    "A young Sun-like star with prominent rings of cosmic dust and suspected exoplanets.",
-    "One of the most luminous red dwarf stars known, located in Piscis Austrinus.",
-    "An inactive, quiet red dwarf hosting an Earth-sized exoplanet in its habitable zone.",
-    "A tight triple star system consisting of three very small red dwarfs.",
-    "First star to have its distance reliably measured using stellar parallax in 1838.",
-    "Orange dwarf companion in the famous 61 Cygni binary system.",
-    "The eighth-brightest star in Earth's night sky, situated in Canis Minor.",
-    "Dense, Earth-sized white dwarf companion in the Procyon system.",
-    "A dim binary red dwarf system located in Cygnus.",
-    "A red dwarf flare star system in Andromeda with orbiting exoplanets.",
-    "An extremely faint red dwarf that experiences periodic, powerful superflares.",
-    "A quiet, solitary yellow dwarf star that is a prime candidate in the search for life.",
-    "An ancient, ultra-cool red dwarf with two Earth-mass planets in its habitable zone.",
-    "An ancient high-speed halo star thought to originate from an absorbed dwarf galaxy."
-  )
-) |> 
+stars <- read_csv("stars_catalog.csv", show_col_types = FALSE)
+
+color_palette <- c(
+  "Blue-White"   = "#80d8ff",
+  "White"        = "#ffffff",
+  "Yellow-White" = "#fff9c4",
+  "Yellow"       = "#ffee58",
+  "Orange"       = "#ffb74d",
+  "Red"          = "#ff5252"
+)
+
+stars <- stars |> 
   mutate(
-    x = dist_ly * cos(angle_deg * pi / 180),
-    y = dist_ly * sin(angle_deg * pi / 180),
-    # HTML formatted card with image and details for side box
+    marker_color = recode(color, !!!color_palette, .default = "#ffee58"),
+    marker_size = case_when(
+      name == "Earth (Sun)" ~ 12,
+      brightness > 10 ~ 7,
+      brightness > 1 ~ 5,
+      TRUE ~ 3.5
+    ),
     summary_html = paste0(
       "<img src='", image, "' alt='", name, "' style='width: 100%; border-radius: 6px; margin-bottom: 12px; object-fit: cover; max-height: 180px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);'>",
       "<h3 style='color: navy; margin-top: 0; margin-bottom: 6px;'>", name, "</h3>",
       "<p style='margin: 4px 0;'><strong>Distance:</strong> ", dist_ly, " light-years</p>",
-      "<p style='margin: 4px 0;'><strong>Type:</strong> ", type, "</p>",
-      "<p style='line-height: 1.5; margin-top: 8px;'>", details, "</p>"
+      "<p style='margin: 4px 0;'><strong>Spectral Type:</strong> ", spect, " (", color, ")</p>",
+      "<p style='margin: 4px 0;'><strong>Temperature:</strong> ", format(temp, big.mark = ","), " K</p>",
+      "<p style='margin: 4px 0;'><strong>Size (Radius):</strong> ", size, " R☉</p>",
+      "<p style='margin: 4px 0;'><strong>Brightness:</strong> ", brightness, " L☉</p>",
+      "<p style='margin: 4px 0;'><strong>Life Stage:</strong> ", stage, "</p>"
     )
   )
 
-# Interactive scatter plot - markers only (no text names until clicked)
-fig <- plot_ly(
-  stars_data,
-  x = ~x,
-  y = ~y,
-  type = "scatter",
-  mode = "markers",
-  hoverinfo = "text",
-  hovertext = "Click to reveal star",
-  customdata = ~summary_html,
-  marker = list(
-    size = ifelse(stars_data$name == "Earth (Sun)", 13, 9),
-    color = ifelse(stars_data$name == "Earth (Sun)", "#0d47a1", "#d84315"),
-    line = list(color = "#ffffff", width = 1)
-  )
-)
-
-# Add dashed concentric distance rings (5, 10, 15 light years)
 ring_shapes <- list()
-for (r in c(5, 10, 15)) {
+for (r in c(20, 40, 60)) {
   ring_shapes[[length(ring_shapes) + 1]] <- list(
     type = "circle",
     xref = "x", yref = "y",
     x0 = -r, y0 = -r, x1 = r, y1 = r,
-    line = list(color = "#b0bec5", dash = "dash", width = 1),
+    line = list(color = "#37474f", dash = "dash", width = 1),
     layer = "below"
   )
 }
 
-fig <- fig |> 
+fig <- plot_ly(
+  stars,
+  x = ~x,
+  y = ~y,
+  type = "scatter",
+  mode = "markers",
+  hoverinfo = "none",
+  customdata = ~summary_html,
+  marker = list(
+    color = ~marker_color,
+    size = ~marker_size,
+    opacity = 0.85,
+    line = list(width = 0)
+  )
+) |> 
   layout(
-    title = list(text = "Nearby Stars Relative to Earth (Click any point)", font = list(color = "navy", size = 16)),
+    title = list(text = "2,200+ Stars Within 70 Light-Years (Click any star)", font = list(color = "navy", size = 16)),
+    plot_bgcolor = "#0b1021",
+    paper_bgcolor = "#ffffff",
     shapes = ring_shapes,
-    xaxis = list(title = "Distance (Light-Years)", zeroline = FALSE, range = c(-16, 16)),
-    yaxis = list(title = "Distance (Light-Years)", zeroline = FALSE, range = c(-16, 16), scaleanchor = "x", scaleratio = 1),
+    xaxis = list(
+      title = "Distance (Light-Years)",
+      zeroline = TRUE,
+      zerolinecolor = "#263238",
+      gridcolor = "#1a233a",
+      range = c(-75, 75)
+    ),
+    yaxis = list(
+      title = "Distance (Light-Years)",
+      zeroline = TRUE,
+      zerolinecolor = "#263238",
+      gridcolor = "#1a233a",
+      range = c(-75, 75),
+      scaleanchor = "x",
+      scaleratio = 1
+    ),
     showlegend = FALSE,
     margin = list(t = 50, b = 40, l = 40, r = 20)
   ) |> 
@@ -161,13 +116,16 @@ fig
 :::
 
 ::: {.column width="30%"}
+```{=html}
 <div id="star-summary" style="padding: 16px; border: 2px solid navy; border-radius: 8px; background-color: #f8f9fa; min-height: 280px; margin-top: 50px;">
   <h4 style="color: navy; margin-top: 0;">Star Information</h4>
   <p><em>Click any star marker on the map to reveal its name, photo, and summary!</em></p>
 </div>
+```
 :::
 :::
 
+```{=html}
 <div style="margin-top: 35px; padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
   <h3 style="color: navy; margin-top: 0;">Star Similarity Calculator</h3>
   <p style="margin-bottom: 20px;">Choose two stars to compare how similar they are based on <strong>size</strong>, <strong>temperature</strong>, <strong>color</strong>, <strong>brightness</strong>, <strong>chemical composition</strong>, and <strong>life cycle stage</strong>:</p>
@@ -175,11 +133,11 @@ fig
   <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px;">
     <div>
       <label for="star1-select" style="font-weight: bold; color: navy;">First Star:</label><br>
-      <select id="star1-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc;"></select>
+      <select id="star1-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 250px;"></select>
     </div>
     <div>
       <label for="star2-select" style="font-weight: bold; color: navy;">Second Star:</label><br>
-      <select id="star2-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc;"></select>
+      <select id="star2-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 250px;"></select>
     </div>
     <div>
       <div style="font-size: 22px; font-weight: bold; color: navy; padding-bottom: 4px;">
@@ -189,148 +147,9 @@ fig
   </div>
 
   <div id="similarity-details" style="font-size: 14px; background: #f8f9fa; border-radius: 6px; padding: 14px; border: 1px solid #e9ecef;">
-    Loading stars...
+    Loading comparison...
   </div>
 </div>
 
-<script>
-const starTraits = {
-  "Earth (Sun)": { size: 1.0, temp: 5778, color: "Yellow", brightness: 1.0, compVal: 1.0, composition: "Solar standard (1.0x iron)", stage: "Main Sequence" },
-  "Proxima Centauri": { size: 0.15, temp: 3042, color: "Red", brightness: 0.0017, compVal: 1.2, composition: "Metal-rich (1.2x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Alpha Centauri A": { size: 1.22, temp: 5790, color: "Yellow", brightness: 1.52, compVal: 1.3, composition: "Metal-rich (1.3x iron)", stage: "Main Sequence" },
-  "Alpha Centauri B": { size: 0.86, temp: 5260, color: "Orange", brightness: 0.50, compVal: 1.3, composition: "Metal-rich (1.3x iron)", stage: "Main Sequence" },
-  "Barnard's Star": { size: 0.20, temp: 3134, color: "Red", brightness: 0.0035, compVal: 0.4, composition: "Metal-poor (0.4x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Wolf 359": { size: 0.16, temp: 2800, color: "Red", brightness: 0.0014, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Lalande 21185": { size: 0.39, temp: 3828, color: "Red", brightness: 0.025, compVal: 0.6, composition: "Metal-poor (0.6x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Sirius A": { size: 1.71, temp: 9940, color: "White", brightness: 25.4, compVal: 2.0, composition: "Metal-rich (2.0x iron)", stage: "Main Sequence" },
-  "Sirius B": { size: 0.008, temp: 25200, color: "White", brightness: 0.056, compVal: 2.0, composition: "Degenerate carbon/oxygen", stage: "White Dwarf" },
-  "Luyten 726-8": { size: 0.14, temp: 2670, color: "Red", brightness: 0.0006, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Ross 154": { size: 0.24, temp: 3120, color: "Red", brightness: 0.0038, compVal: 0.6, composition: "Metal-poor (0.6x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Ross 248": { size: 0.16, temp: 2799, color: "Red", brightness: 0.0018, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Epsilon Eridani": { size: 0.74, temp: 5084, color: "Orange", brightness: 0.34, compVal: 0.8, composition: "Moderate metal-poor (0.8x)", stage: "Main Sequence" },
-  "Lacaille 9352": { size: 0.47, temp: 3626, color: "Red", brightness: 0.033, compVal: 0.7, composition: "Metal-poor (0.7x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Ross 128": { size: 0.20, temp: 3192, color: "Red", brightness: 0.0036, compVal: 0.6, composition: "Metal-poor (0.6x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "EZ Aquarii": { size: 0.12, temp: 2700, color: "Red", brightness: 0.0003, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "61 Cygni A": { size: 0.67, temp: 4526, color: "Orange", brightness: 0.15, compVal: 0.6, composition: "Metal-poor (0.6x iron)", stage: "Main Sequence" },
-  "61 Cygni B": { size: 0.60, temp: 4077, color: "Orange", brightness: 0.085, compVal: 0.6, composition: "Metal-poor (0.6x iron)", stage: "Main Sequence" },
-  "Procyon A": { size: 2.05, temp: 6530, color: "Yellow-White", brightness: 6.93, compVal: 1.0, composition: "Solar standard (1.0x iron)", stage: "Subgiant" },
-  "Procyon B": { size: 0.012, temp: 7740, color: "White", brightness: 0.0005, compVal: 1.0, composition: "Degenerate carbon/oxygen", stage: "White Dwarf" },
-  "Struve 2398 A": { size: 0.35, temp: 3450, color: "Red", brightness: 0.016, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Groombridge 34 A": { size: 0.38, temp: 3500, color: "Red", brightness: 0.021, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "DX Cancri": { size: 0.11, temp: 2840, color: "Red", brightness: 0.0001, compVal: 0.4, composition: "Metal-poor (0.4x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Tau Ceti": { size: 0.79, temp: 5344, color: "Yellow", brightness: 0.52, compVal: 0.4, composition: "Metal-poor (0.4x iron)", stage: "Main Sequence" },
-  "Teegarden's Star": { size: 0.10, temp: 2904, color: "Red", brightness: 0.0007, compVal: 0.5, composition: "Metal-poor (0.5x iron)", stage: "Main Sequence (Red Dwarf)" },
-  "Kapteyn's Star": { size: 0.29, temp: 3550, color: "Red", brightness: 0.012, compVal: 0.1, composition: "Very metal-poor halo star (0.1x)", stage: "Subdwarf" }
-};
-
-const colorRanks = { "Red": 1, "Orange": 2, "Yellow": 3, "Yellow-White": 4, "White": 5 };
-
-function computeSimilarity(s1, s2) {
-  if (s1 === s2) return { total: 100, sSize: 100, sTemp: 100, sColor: 100, sBright: 100, sComp: 100, sStage: 100 };
-  const d1 = starTraits[s1];
-  const d2 = starTraits[s2];
-
-  // 1. Size similarity
-  const sSize = Math.max(0, 1 - Math.abs(Math.log10(d1.size / d2.size)) / 2) * 100;
-
-  // 2. Temperature similarity
-  const sTemp = Math.max(0, 1 - Math.abs(d1.temp - d2.temp) / Math.max(d1.temp, d2.temp)) * 100;
-
-  // 3. Color similarity
-  const stepDiff = Math.abs((colorRanks[d1.color] || 3) - (colorRanks[d2.color] || 3));
-  const sColor = Math.max(0, 1 - stepDiff / 4) * 100;
-
-  // 4. Brightness similarity
-  const sBright = Math.max(0, 1 - Math.abs(Math.log10(d1.brightness / d2.brightness)) / 5) * 100;
-
-  // 5. Chemical composition similarity
-  const sComp = Math.max(0, 1 - Math.abs(d1.compVal - d2.compVal) / 2) * 100;
-
-  // 6. Life cycle stage similarity
-  let sStage = 20;
-  if (d1.stage === d2.stage) sStage = 100;
-  else if (d1.stage.includes("Main Sequence") && d2.stage.includes("Main Sequence")) sStage = 80;
-  else if (d1.stage.includes("Sub") || d2.stage.includes("Sub")) sStage = 50;
-
-  const total = Math.round((sSize + sTemp + sColor + sBright + sComp + sStage) / 6);
-  return { total, sSize: Math.round(sSize), sTemp: Math.round(sTemp), sColor: Math.round(sColor), sBright: Math.round(sBright), sComp: Math.round(sComp), sStage: Math.round(sStage) };
-}
-
-function updateComparison() {
-  const sel1 = document.getElementById("star1-select").value;
-  const sel2 = document.getElementById("star2-select").value;
-  if (!sel1 || !sel2) return;
-
-  const res = computeSimilarity(sel1, sel2);
-  document.getElementById("similarity-score").textContent = res.total + "%";
-
-  const d1 = starTraits[sel1];
-  const d2 = starTraits[sel2];
-
-  document.getElementById("similarity-details").innerHTML = `
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="border-bottom: 2px solid #ccc; color: navy;">
-          <th style="padding: 6px;">Trait</th>
-          <th style="padding: 6px;">${sel1}</th>
-          <th style="padding: 6px;">${sel2}</th>
-          <th style="padding: 6px;">Match</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 6px;"><strong>Size (Radius):</strong></td>
-          <td style="padding: 6px;">${d1.size} R☉</td>
-          <td style="padding: 6px;">${d2.size} R☉</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sSize}%</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 6px;"><strong>Temperature:</strong></td>
-          <td style="padding: 6px;">${d1.temp.toLocaleString()} K</td>
-          <td style="padding: 6px;">${d2.temp.toLocaleString()} K</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sTemp}%</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 6px;"><strong>Color:</strong></td>
-          <td style="padding: 6px;">${d1.color}</td>
-          <td style="padding: 6px;">${d2.color}</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sColor}%</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 6px;"><strong>Brightness:</strong></td>
-          <td style="padding: 6px;">${d1.brightness} L☉</td>
-          <td style="padding: 6px;">${d2.brightness} L☉</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sBright}%</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 6px;"><strong>Composition:</strong></td>
-          <td style="padding: 6px;">${d1.composition}</td>
-          <td style="padding: 6px;">${d2.composition}</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sComp}%</td>
-        </tr>
-        <tr>
-          <td style="padding: 6px;"><strong>Life Stage:</strong></td>
-          <td style="padding: 6px;">${d1.stage}</td>
-          <td style="padding: 6px;">${d2.stage}</td>
-          <td style="padding: 6px; color: #2e7d32; font-weight: bold;">${res.sStage}%</td>
-        </tr>
-      </tbody>
-    </table>
-  `;
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  const sel1 = document.getElementById("star1-select");
-  const sel2 = document.getElementById("star2-select");
-  const names = Object.keys(starTraits);
-
-  names.forEach((name, i) => {
-    sel1.add(new Option(name, name, false, i === 0));
-    sel2.add(new Option(name, name, false, i === 2));
-  });
-
-  sel1.addEventListener("change", updateComparison);
-  sel2.addEventListener("change", updateComparison);
-  updateComparison();
-});
-</script>
+<script src="similarity.js"></script>
+```
