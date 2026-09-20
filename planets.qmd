@@ -1,56 +1,128 @@
 ---
-title: "Planets"
+title: "Planets & Nearby Stars"
 format:
   html:
     css: styles.css
 ---
 
-Welcome to the planets website!
+Welcome to the planets and stars website! Click any star on the map to inspect its details in the sidebar.
 
+::: {.columns}
+::: {.column width="68%"}
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 
 library(tidyverse)
+library(plotly)
+library(htmlwidgets)
 
-# Nearest stars to Earth with distance in light-years
-stars <- tibble(
-  star = c("Earth (Sun)", "Proxima Centauri", "Alpha Centauri A", "Barnard's Star", 
-           "Wolf 359", "Lalande 21185", "Sirius", "Luyten 726-8", "Ross 154"),
-  dist_ly = c(0, 4.25, 4.37, 5.96, 7.86, 8.31, 8.66, 8.73, 9.70),
-  angle_deg = c(0, 45, 60, 110, 160, 200, 240, 290, 330)
+# Dataset of nearest stars to Earth
+stars_data <- tibble(
+  name = c("Earth (Sun)", "Proxima Centauri", "Alpha Centauri A", "Alpha Centauri B",
+           "Barnard's Star", "Wolf 359", "Lalande 21185", "Sirius A", 
+           "Luyten 726-8", "Ross 154", "Ross 248", "Epsilon Eridani", 
+           "61 Cygni", "Procyon", "Tau Ceti", "Kapteyn's Star"),
+  dist_ly = c(0, 4.25, 4.37, 4.37, 5.96, 7.86, 8.31, 8.66, 8.73, 9.70, 10.30, 10.50, 11.41, 11.46, 11.91, 12.83),
+  angle_deg = c(0, 45, 55, 65, 105, 145, 175, 210, 245, 275, 305, 325, 345, 130, 80, 225),
+  type = c("G-type (Sun / Earth)", "Red Dwarf (M-type)", "Yellow Dwarf (G-type)", "Orange Dwarf (K-type)",
+           "Red Dwarf (M-type)", "Red Dwarf (M-type)", "Red Dwarf (M-type)", "White Star (A-type)",
+           "Binary Red Dwarf", "Red Dwarf (M-type)", "Red Dwarf (M-type)", "Orange Dwarf (K-type)",
+           "Binary K-type", "White-Yellow (F-type)", "Yellow Dwarf (G-type)", "Red Subdwarf"),
+  details = c(
+    "Our home planetary system and solar neighborhood center.",
+    "The closest known star to the Sun. Hosts the Earth-sized exoplanet Proxima b.",
+    "Very similar in mass and luminosity to our Sun; primary member of the Alpha Centauri system.",
+    "Slightly smaller and cooler than our Sun; companion in the Alpha Centauri system.",
+    "Known for having the highest proper motion (apparent speed across the sky) of any star.",
+    "A very faint red dwarf star made famous in science fiction (like Star Trek).",
+    "One of the brightest red dwarf stars visible from Earth (in Ursa Major).",
+    "The brightest star visible in Earth's night sky, also known as the Dog Star.",
+    "A flare star system that occasionally undergoes dramatic temporary bursts of brightness.",
+    "A young, highly active red dwarf flare star located in Sagittarius.",
+    "In about 33,000 years, will briefly become our closest neighboring star.",
+    "A nearby star with rings of cosmic dust and suspected orbiting gas giant planets.",
+    "First star to have its distance reliably measured using stellar parallax in 1838.",
+    "The eighth-brightest star in the night sky, with a faint white dwarf companion.",
+    "A stable Sun-like star frequently studied in searches for habitable exoplanets.",
+    "An ancient halo star believed to originate from a dwarf galaxy merged into the Milky Way."
+  )
 ) |> 
-  # Convert polar coordinates (distance and angle) to 2D x and y coordinates
   mutate(
     x = dist_ly * cos(angle_deg * pi / 180),
-    y = dist_ly * sin(angle_deg * pi / 180)
+    y = dist_ly * sin(angle_deg * pi / 180),
+    # HTML summary formatted for the side box
+    summary_html = paste0(
+      "<h3 style='color: navy; margin-top: 0;'>", name, "</h3>",
+      "<p><strong>Distance:</strong> ", dist_ly, " light-years</p>",
+      "<p><strong>Type:</strong> ", type, "</p>",
+      "<p style='line-height: 1.5;'>", details, "</p>"
+    ),
+    tooltip = paste0(name, "\nDistance: ", dist_ly, " ly\nType: ", type)
   )
 
-ggplot(stars, aes(x = x, y = y)) +
-  # Dashed circles representing 5 and 10 light-year distances from Earth
-  annotate("path",
-    x = 5 * cos(seq(0, 2 * pi, length.out = 100)),
-    y = 5 * sin(seq(0, 2 * pi, length.out = 100)),
-    color = "gray75", linetype = "dashed"
-  ) +
-  annotate("path",
-    x = 10 * cos(seq(0, 2 * pi, length.out = 100)),
-    y = 10 * sin(seq(0, 2 * pi, length.out = 100)),
-    color = "gray75", linetype = "dashed"
-  ) +
-  annotate("text", x = 0, y = 5.3, label = "5 light-years", color = "gray50", size = 3) +
-  annotate("text", x = 0, y = 10.3, label = "10 light-years", color = "gray50", size = 3) +
-  # Plot Earth and stars
-  geom_point(aes(color = (star == "Earth (Sun)")), size = 3.5) +
-  geom_text(aes(label = star), vjust = -1, size = 3.2) +
-  scale_color_manual(values = c("TRUE" = "blue", "FALSE" = "darkorange"), guide = "none") +
-  coord_fixed() +
-  labs(
-    title = "Nearby Stars Relative to Earth",
-    subtitle = "Distances measured in light-years with Earth at the center",
-    x = "Light-Years",
-    y = "Light-Years"
-  ) +
-  theme_minimal()
+# Interactive scatter plot with plotly
+fig <- plot_ly(
+  stars_data,
+  x = ~x,
+  y = ~y,
+  type = "scatter",
+  mode = "markers+text",
+  text = ~name,
+  textposition = "top center",
+  hoverinfo = "text",
+  hovertext = ~tooltip,
+  customdata = ~summary_html,
+  marker = list(
+    size = ifelse(stars_data$name == "Earth (Sun)", 13, 8),
+    color = ifelse(stars_data$name == "Earth (Sun)", "#0d47a1", "#d84315"),
+    line = list(color = "#ffffff", width = 1)
+  )
+)
+
+# Add dashed concentric distance rings (5, 10, 15 light years)
+ring_shapes <- list()
+for (r in c(5, 10, 15)) {
+  ring_shapes[[length(ring_shapes) + 1]] <- list(
+    type = "circle",
+    xref = "x", yref = "y",
+    x0 = -r, y0 = -r, x1 = r, y1 = r,
+    line = list(color = "#b0bec5", dash = "dash", width = 1),
+    layer = "below"
+  )
+}
+
+fig <- fig |> 
+  layout(
+    title = list(text = "Nearby Stars Relative to Earth (Light-Years)", font = list(color = "navy", size = 16)),
+    shapes = ring_shapes,
+    xaxis = list(title = "Distance (Light-Years)", zeroline = FALSE, range = c(-16, 16)),
+    yaxis = list(title = "Distance (Light-Years)", zeroline = FALSE, range = c(-16, 16), scaleanchor = "x", scaleratio = 1),
+    showlegend = FALSE,
+    margin = list(t = 50, b = 40, l = 40, r = 20)
+  ) |> 
+  onRender("
+    function(el) {
+      el.on('plotly_click', function(d) {
+        if (d.points && d.points.length > 0) {
+          var info = d.points[0].customdata;
+          if (info) {
+            document.getElementById('star-summary').innerHTML = info;
+          }
+        }
+      });
+    }
+  ")
+
+fig
 ```
+:::
+
+::: {.column width="30%"}
+<div id="star-summary" style="padding: 16px; border: 2px solid navy; border-radius: 8px; background-color: #f8f9fa; min-height: 250px; margin-top: 50px;">
+  <h4 style="color: navy; margin-top: 0;">Star Information</h4>
+  <p><em>Click any star on the graph to display its summary here!</em></p>
+</div>
+:::
+:::
