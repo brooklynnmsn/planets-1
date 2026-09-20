@@ -127,6 +127,26 @@ fig
 
 ```{=html}
 <div style="margin-top: 35px; padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+  <h3 style="color: navy; margin-top: 0;">Interstellar Perspective: Distance to Neighboring Stars from Any Planet</h3>
+  <p style="margin-bottom: 16px;">
+    Select any planet—either from our Solar System or an exoplanet in a distant star system—to see a line graph comparing how close the neighboring stars are from that planet versus from Earth:
+  </p>
+
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+    <label for="planet-selector" style="font-weight: bold; color: navy; font-size: 15px;">Choose Planet:</label>
+    <select id="planet-selector" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 380px;"></select>
+  </div>
+
+  <div id="planet-info-badge" style="padding: 10px 14px; background: #e8eaf6; border-left: 4px solid navy; border-radius: 4px; font-size: 14px; color: #1a237e; margin-bottom: 18px;">
+    Loading planet profile...
+  </div>
+
+  <div id="planet-line-plot" style="width: 100%; min-height: 420px;"></div>
+</div>
+
+<script src="planet_graph.js"></script>
+
+<div style="margin-top: 35px; padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
   <h3 style="color: navy; margin-top: 0;">Star Similarity Calculator</h3>
   <p style="margin-bottom: 20px;">Choose two stars to compare how similar they are based on <strong>size</strong>, <strong>temperature</strong>, <strong>color</strong>, <strong>brightness</strong>, <strong>chemical composition</strong>, and <strong>life cycle stage</strong>:</p>
 
