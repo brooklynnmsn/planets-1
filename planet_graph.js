@@ -8,6 +8,9 @@ function updatePlanetLineGraph() {
   const planetId = selectEl.value;
   const planet = availablePlanets.find(p => p.id === planetId) || availablePlanets[0];
 
+  const viewModeEl = document.getElementById('planet-view-mode');
+  const viewMode = viewModeEl ? viewModeEl.value : 'combined';
+
   // Update info badge
   const infoEl = document.getElementById('planet-info-badge');
   if (infoEl) {
@@ -34,15 +37,28 @@ function updatePlanetLineGraph() {
     }
   }
 
+  // Sort by distance to planet
   distList.sort((a, b) => a.distPlanet - b.distPlanet);
-  const topStars = distList.slice(0, 15);
 
-  const starNames = topStars.map(s => s.name);
-  const planetDists = topStars.map(s => s.distPlanet);
-  const earthDists = topStars.map(s => s.distEarth);
+  let selectedStars = [];
+  if (viewMode === 'nearest') {
+    selectedStars = distList.slice(0, 15).map(s => ({ ...s, label: s.name }));
+  } else if (viewMode === 'dissimilar') {
+    // Most dissimilar stars in distance (the farthest stars from the planet in the catalog)
+    selectedStars = distList.slice(-15).reverse().map(s => ({ ...s, label: '[Dissimilar] ' + s.name }));
+  } else {
+    // Combined mode: 8 closest neighbors + 8 most dissimilar (farthest) stars
+    const nearest = distList.slice(0, 8).map(s => ({ ...s, label: '[Near] ' + s.name }));
+    const dissimilar = distList.slice(-8).reverse().map(s => ({ ...s, label: '[Dissimilar] ' + s.name }));
+    selectedStars = nearest.concat(dissimilar);
+  }
+
+  const starLabels = selectedStars.map(s => s.label);
+  const planetDists = selectedStars.map(s => s.distPlanet);
+  const earthDists = selectedStars.map(s => s.distEarth);
 
   const tracePlanet = {
-    x: starNames,
+    x: starLabels,
     y: planetDists,
     type: 'scatter',
     mode: 'lines+markers',
@@ -53,7 +69,7 @@ function updatePlanetLineGraph() {
   };
 
   const traceEarth = {
-    x: starNames,
+    x: starLabels,
     y: earthDists,
     type: 'scatter',
     mode: 'lines+markers',
@@ -65,11 +81,11 @@ function updatePlanetLineGraph() {
 
   const layout = {
     title: {
-      text: 'Distances to 15 Nearest Stars: ' + planet.name + ' vs. Earth',
+      text: 'Star Distance Spectrum for ' + planet.name + ' (Nearest to Most Dissimilar Stars)',
       font: { color: 'navy', size: 16 }
     },
     xaxis: {
-      title: 'Nearest Stars (Ranked by Closeness to Selected Planet/Dwarf Planet)',
+      title: 'Stars (Comparing Nearest Neighbors vs. Most Dissimilar Farthest Stars)',
       tickangle: -35,
       automargin: true
     },
@@ -109,12 +125,17 @@ function initPlanetSelector() {
       const opt = document.createElement('option');
       opt.value = p.id;
       opt.textContent = p.name;
-      if (p.id === 'pluto') opt.selected = true; // highlight Pluto by default!
+      if (p.id === 'pluto') opt.selected = true;
       groupEl.appendChild(opt);
     });
 
     selectEl.appendChild(groupEl);
   });
+
+  const viewModeEl = document.getElementById('planet-view-mode');
+  if (viewModeEl) {
+    viewModeEl.addEventListener('change', updatePlanetLineGraph);
+  }
 
   selectEl.addEventListener('change', updatePlanetLineGraph);
   updatePlanetLineGraph();

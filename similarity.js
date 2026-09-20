@@ -70,6 +70,48 @@ function updateComparison() {
       '<td style="padding: 6px; color: #2e7d32; font-weight: bold;">' + res.sStage + '%</td></tr>' +
       '</tbody></table>';
   }
+
+  // Calculate Most Similar and Most Dissimilar stars across the catalog to sel1
+  const plotEl = document.getElementById('similarity-spectrum-plot');
+  if (plotEl && window.Plotly) {
+    const allNames = Object.keys(starTraits);
+    const scores = [];
+    for (let i = 0; i < allNames.length; i++) {
+      const n = allNames[i];
+      if (n !== sel1) {
+        scores.push({ name: n, score: computeSimilarity(sel1, n).total });
+      }
+    }
+    scores.sort((a, b) => b.score - a.score);
+    const topSimilar = scores.slice(0, 4);
+    const topDissimilar = scores.slice(-4).reverse();
+
+    const chartLabels = topSimilar.map(s => '[Similar] ' + s.name).concat(topDissimilar.map(s => '[Dissimilar] ' + s.name));
+    const chartScores = topSimilar.map(s => s.score).concat(topDissimilar.map(s => s.score));
+    const chartColors = topSimilar.map(() => '#2e7d32').concat(topDissimilar.map(() => '#c62828'));
+
+    const trace = {
+      x: chartLabels,
+      y: chartScores,
+      type: 'bar',
+      marker: { color: chartColors },
+      hovertemplate: '<b>%{x}</b><br>Similarity Score: %{y}%<extra></extra>'
+    };
+
+    const layout = {
+      title: {
+        text: 'Most Similar vs. Most Dissimilar Stars to ' + sel1,
+        font: { color: 'navy', size: 14 }
+      },
+      xaxis: { tickangle: -30, automargin: true },
+      yaxis: { title: 'Similarity (%)', range: [0, 100], gridcolor: '#eee' },
+      margin: { t: 40, b: 80, l: 45, r: 20 },
+      paper_bgcolor: '#ffffff',
+      plot_bgcolor: '#fbfcfd'
+    };
+
+    Plotly.react('similarity-spectrum-plot', [trace], layout, { responsive: true });
+  }
 }
 
 function initComparison() {
