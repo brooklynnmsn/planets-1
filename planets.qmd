@@ -129,11 +129,11 @@ fig
 <div style="margin-top: 35px; padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
   <h3 style="color: navy; margin-top: 0;">Interstellar Perspective: Distance to Neighboring Stars from Any Planet</h3>
   <p style="margin-bottom: 16px;">
-    Select any planet—either from our Solar System or an exoplanet in a distant star system—to see a line graph comparing how close the neighboring stars are from that planet versus from Earth:
+    Select any major planet, dwarf planet (like Pluto, Ceres, Eris, Haumea, or Makemake), or distant exoplanet to see a line graph comparing how close the neighboring stars are from that world versus from Earth:
   </p>
 
   <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
-    <label for="planet-selector" style="font-weight: bold; color: navy; font-size: 15px;">Choose Planet:</label>
+    <label for="planet-selector" style="font-weight: bold; color: navy; font-size: 15px;">Choose Planet / Dwarf Planet:</label>
     <select id="planet-selector" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 380px;"></select>
   </div>
 
