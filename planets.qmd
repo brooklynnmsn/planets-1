@@ -7,6 +7,11 @@ execute:
 format:
   html:
     css: styles.css
+    resources:
+      - images/
+      - planet_graph.js
+      - similarity.js
+      - stars_traits.json
 ---
 
 ::: {.columns}
