@@ -1,5 +1,10 @@
 ---
 title: "Planets"
-format: html
+format:
+  html:
+    css: styles.css
 ---
+
+Welcome to the planets website!
+
 

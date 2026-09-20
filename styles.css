@@ -1,0 +1,10 @@
+body {
+  border: 45px solid transparent;
+  border-image-source: url("cartoon-planets-border.svg");
+  border-image-slice: 30;
+  border-image-repeat: round;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 24px;
+}
