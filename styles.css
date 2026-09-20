@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+body {
+  border: 24px solid transparent;
+  border-image-source: url("cartoon-planets-border.svg");
+  border-image-slice: 30;
+  border-image-repeat: round;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2, h3, .title {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: navy;
+}
