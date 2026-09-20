@@ -5,8 +5,6 @@ format:
     css: styles.css
 ---
 
-Welcome to the planets and stars website! Click any star on the map to inspect its details in the sidebar.
-
 ::: {.columns}
 ::: {.column width="68%"}
 ```{r}
