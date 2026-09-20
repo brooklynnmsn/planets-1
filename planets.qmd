@@ -187,30 +187,30 @@ fig
 <script src="planet_graph.js"></script>
 
 <div style="margin-top: 35px; padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-  <h3 style="color: navy; margin-top: 0;">Star Similarity Calculator</h3>
-  <p style="margin-bottom: 20px;">Choose two stars to compare how similar they are based on <strong>size</strong>, <strong>temperature</strong>, <strong>color</strong>, <strong>brightness</strong>, <strong>chemical composition</strong>, and <strong>life cycle stage</strong>:</p>
+  <h3 style="color: navy; margin-top: 0;">Most Similar & Dissimilar Stars</h3>
+  <p style="margin-bottom: 16px;">
+    Select any reference star to view its most similar and most dissimilar counterparts across the galaxy. 
+    Click on any star picture to reveal an in-depth explanation of why they are similar or dissimilar!
+  </p>
 
-  <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px;">
-    <div>
-      <label for="star1-select" style="font-weight: bold; color: navy;">First Star:</label><br>
-      <select id="star1-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 250px;"></select>
-    </div>
-    <div>
-      <label for="star2-select" style="font-weight: bold; color: navy;">Second Star:</label><br>
-      <select id="star2-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 250px;"></select>
-    </div>
-    <div>
-      <div style="font-size: 22px; font-weight: bold; color: navy; padding-bottom: 4px;">
-        Similarity Score: <span id="similarity-score" style="color: #d84315;">--%</span>
-      </div>
-    </div>
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 22px;">
+    <label for="ref-star-select" style="font-weight: bold; color: navy; font-size: 15px;">Choose Reference Star:</label>
+    <select id="ref-star-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 320px;"></select>
   </div>
 
-  <div id="similarity-details" style="font-size: 14px; background: #f8f9fa; border-radius: 6px; padding: 14px; border: 1px solid #e9ecef;">
-    Loading comparison...
+  <div style="margin-bottom: 22px;">
+    <h4 style="color: #2e7d32; margin: 0 0 10px 0;">🌟 Most Similar Stars <span style="font-size: 13px; font-weight: normal; color: #555;">(Click an image to learn why)</span></h4>
+    <div id="similar-stars-grid" style="display: flex; gap: 14px; flex-wrap: wrap;"></div>
   </div>
 
-  <div id="similarity-spectrum-plot" style="width: 100%; min-height: 280px; margin-top: 20px;"></div>
+  <div style="margin-bottom: 22px;">
+    <h4 style="color: #c62828; margin: 0 0 10px 0;">⚡ Most Dissimilar Stars <span style="font-size: 13px; font-weight: normal; color: #555;">(Click an image to learn why)</span></h4>
+    <div id="dissimilar-stars-grid" style="display: flex; gap: 14px; flex-wrap: wrap;"></div>
+  </div>
+
+  <div id="similarity-explanation-box" style="margin-top: 18px; padding: 18px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e0e0e0; min-height: 120px;">
+    <p style="color: #757575; font-style: italic; margin: 0;">Click on any star picture above to see a detailed explanation of why it is similar or dissimilar!</p>
+  </div>
 </div>
 
 <script src="similarity.js"></script>
