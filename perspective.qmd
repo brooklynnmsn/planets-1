@@ -1,0 +1,37 @@
+---
+title: "Interstellar Perspective"
+format:
+  html:
+    toc: false
+---
+
+```{=html}
+<script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
+
+<div style="padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+  <h3 style="color: navy; margin-top: 0;">Distance to Neighboring Stars from Any Planet</h3>
+  <p style="margin-bottom: 16px;">
+    Select any major planet, dwarf planet (like Pluto, Ceres, Eris, Haumea, or Makemake), or distant exoplanet to see a line graph comparing how close the neighboring stars are from that world versus from Earth:
+  </p>
+
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+    <label for="planet-selector" style="font-weight: bold; color: navy; font-size: 15px;">Choose Planet / Dwarf Planet:</label>
+    <select id="planet-selector" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 300px;"></select>
+
+    <label for="planet-view-mode" style="font-weight: bold; color: navy; font-size: 15px;">Display Stars:</label>
+    <select id="planet-view-mode" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 320px;">
+      <option value="combined" selected>Nearest & Most Dissimilar Stars</option>
+      <option value="nearest">Nearest Neighbors Only</option>
+      <option value="dissimilar">Most Dissimilar (Farthest) Stars Only</option>
+    </select>
+  </div>
+
+  <div id="planet-info-badge" style="padding: 10px 14px; background: #e8eaf6; border-left: 4px solid navy; border-radius: 4px; font-size: 14px; color: #1a237e; margin-bottom: 18px;">
+    Loading planet profile...
+  </div>
+
+  <div id="planet-line-plot" style="width: 100%; min-height: 440px;"></div>
+</div>
+
+<script src="planet_graph.js"></script>
+```

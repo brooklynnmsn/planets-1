@@ -1,0 +1,28 @@
+project:
+  type: website
+
+website:
+  title: "Planets & Nearby Stars"
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Star Map"
+      - href: perspective.qmd
+        text: "Interstellar Perspective"
+      - href: similarities.qmd
+        text: "Star Similarities"
+      - href: constellations.qmd
+        text: "Constellations"
+      - href: story.qmd
+        text: "The Story & About"
+
+format:
+  html:
+    css: styles.css
+    resources:
+      - images/
+      - planet_graph.js
+      - similarity.js
+      - stars_traits.json
+      - cartoon-planets-border.svg
+      - planets-bg.svg

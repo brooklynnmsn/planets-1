@@ -1,0 +1,263 @@
+---
+title: "Interactive Constellations"
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{=html}
+<div style="margin-bottom: 20px; padding: 18px 22px; border: 2px solid navy; border-radius: 8px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+  <h3 style="color: navy; margin-top: 0;">Exploring the Night Sky: Constellation Line Graphs</h3>
+  <p style="margin-bottom: 8px; color: #333;">
+    For thousands of years, humans have connected the dots between distant stars to create mythological figures, navigation guides, and seasonal calendars.
+    Below is an interactive constellation chart mapping major constellations across the celestial sphere.
+  </p>
+  <p style="margin: 0; font-size: 14px; color: #555;">
+    💡 <strong>Tip:</strong> Hover over any star to inspect its name, magnitude, distance, and spectral color. Click on constellation names in the legend to toggle them on or off!
+  </p>
+</div>
+```
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+# Define stars with celestial coordinates (RA in hours converted to deg, Dec in deg),
+# visual magnitude, distance in ly, color, and lore.
+stars_data <- tribble(
+  ~star, ~constellation, ~ra_deg, ~dec_deg, ~mag, ~dist_ly, ~color_hex, ~spectral, ~lore,
+  # Orion (The Hunter)
+  "Betelgeuse", "Orion", 88.79, 7.41, 0.5, 548, "#ff7043", "M1-2 Ia-ab (Red Supergiant)", "Right shoulder; pulsing red supergiant nearing supernova.",
+  "Rigel", "Orion", 78.63, -8.20, 0.18, 860, "#90caf9", "B8 Ia (Blue Supergiant)", "Left foot; luminous blue supergiant, 120,000x brighter than Sun.",
+  "Bellatrix", "Orion", 81.28, 6.35, 1.64, 250, "#bbdefb", "B2 III (Blue Giant)", "Left shoulder; known as the Amazon Star.",
+  "Saiph", "Orion", 86.94, -9.67, 2.07, 650, "#bbdefb", "B0.5 Ia (Supergiant)", "Right foot of the cosmic hunter.",
+  "Alnitak", "Orion", 85.19, -1.94, 1.74, 1260, "#90caf9", "O9.7 Ib (Blue Supergiant)", "Eastern star of Orion's Belt; near Flame & Horsehead nebulae.",
+  "Alnilam", "Orion", 84.05, -1.20, 1.69, 2000, "#90caf9", "B0 Ia (Blue Supergiant)", "Center star of Orion's Belt.",
+  "Mintaka", "Orion", 83.00, -0.30, 2.25, 1200, "#90caf9", "O9.5 II (Bright Giant)", "Western star of Orion's Belt, closely aligned with celestial equator.",
+
+  # Ursa Major (Big Dipper)
+  "Dubhe", "Ursa Major", 165.93, 61.75, 1.79, 123, "#ffcc80", "K0 III (Orange Giant)", "Pointers star pointing directly towards Polaris.",
+  "Merak", "Ursa Major", 165.46, 56.38, 2.37, 79, "#ffffff", "A1 V (White)", "Lower pointer star of the Dipper's bowl.",
+  "Phecda", "Ursa Major", 178.46, 53.69, 2.44, 83, "#ffffff", "A0 V (White)", "Bottom-inner bowl star of the Big Dipper.",
+  "Megrez", "Ursa Major", 183.86, 57.03, 3.32, 80, "#ffffff", "A3 V (White)", "Junction joining the bowl to the handle.",
+  "Alioth", "Ursa Major", 193.51, 55.96, 1.76, 82, "#ffffff", "A1 III-IV (White)", "Brightest star in Ursa Major; base of the handle.",
+  "Mizar", "Ursa Major", 200.98, 54.92, 2.23, 83, "#ffffff", "A2 V (White)", "Famous double star with companion Alcor, used in ancient eyesight tests.",
+  "Alkaid", "Ursa Major", 206.89, 49.31, 1.85, 103, "#bbdefb", "B3 V (Blue-White)", "Tip of the Dipper handle; name means Leader of the Daughters.",
+
+  # Cassiopeia (The Queen)
+  "Caph", "Cassiopeia", 2.30, 59.15, 2.28, 55, "#fff9c4", "F2 III (Yellow-White)", "Western star of the celestial 'W'.",
+  "Schedar", "Cassiopeia", 10.13, 56.54, 2.24, 228, "#ffb74d", "K0 IIIa (Orange Giant)", "Heart of Queen Cassiopeia.",
+  "Gamma Cas", "Cassiopeia", 14.18, 60.72, 2.15, 550, "#90caf9", "B0.5 IVe (Blue Variable)", "Center peak of the 'W'; violent rapid rotator.",
+  "Ruchbah", "Cassiopeia", 20.20, 60.23, 2.68, 99, "#ffffff", "A5 V (White)", "Knee of the seated queen.",
+  "Segin", "Cassiopeia", 26.60, 63.67, 3.35, 460, "#bbdefb", "B3 III (Blue Giant)", "Eastern tip of the 'W'.",
+
+  # Cygnus (The Swan / Northern Cross)
+  "Deneb", "Cygnus", 310.29, 45.28, 1.25, 2615, "#ffffff", "A2 Ia (White Supergiant)", "Tail of the swan; corner of the Summer Triangle.",
+  "Sadr", "Cygnus", 305.56, 40.26, 2.23, 1800, "#fff9c4", "F8 Ib (Supergiant)", "Chest of the Swan; intersection of the Northern Cross.",
+  "Albireo", "Cygnus", 291.80, 27.96, 3.05, 430, "#ffa726", "K2 II + B8 V (Gold & Blue)", "Beak of the swan; famous striking color binary.",
+  "Gienah", "Cygnus", 311.55, 33.97, 2.48, 73, "#ffcc80", "K0 III (Giant)", "Eastern wing of the Swan.",
+  "Fawaris", "Cygnus", 296.24, 45.13, 2.86, 165, "#bbdefb", "B9.5 III (Blue-White)", "Western wing of the Swan.",
+
+  # Canis Major (The Great Dog)
+  "Sirius", "Canis Major", 101.29, -16.72, -1.46, 8.6, "#e0f7fa", "A1 V (Bright White)", "Brightest star in Earth's night sky; the Dog Star.",
+  "Mirzam", "Canis Major", 95.68, -17.96, 1.98, 500, "#90caf9", "B1 II-III (Blue Giant)", "Announcer star rising just before Sirius.",
+  "Wezen", "Canis Major", 107.10, -26.39, 1.83, 1600, "#fff9c4", "F8 Ia (Yellow-White Supergiant)", "Weight/rump of the Great Dog.",
+  "Adhara", "Canis Major", 104.66, -28.97, 1.50, 430, "#90caf9", "B2 II (Blue Bright Giant)", "One of the brightest ultraviolet emitters in the sky.",
+  "Aludra", "Canis Major", 110.96, -29.30, 2.45, 2000, "#90caf9", "B5 Ia (Blue Supergiant)", "Tail tip of the Great Dog."
+)
+
+# Constellation lines connecting stars
+connections <- tribble(
+  ~constellation, ~from, ~to,
+  # Orion
+  "Orion", "Betelgeuse", "Bellatrix",
+  "Orion", "Betelgeuse", "Alnitak",
+  "Orion", "Bellatrix", "Mintaka",
+  "Orion", "Mintaka", "Alnilam",
+  "Orion", "Alnilam", "Alnitak",
+  "Orion", "Alnitak", "Saiph",
+  "Orion", "Mintaka", "Rigel",
+  "Orion", "Saiph", "Rigel",
+
+  # Ursa Major
+  "Ursa Major", "Dubhe", "Merak",
+  "Ursa Major", "Merak", "Phecda",
+  "Ursa Major", "Phecda", "Megrez",
+  "Ursa Major", "Megrez", "Dubhe",
+  "Ursa Major", "Megrez", "Alioth",
+  "Ursa Major", "Alioth", "Mizar",
+  "Ursa Major", "Mizar", "Alkaid",
+
+  # Cassiopeia
+  "Cassiopeia", "Caph", "Schedar",
+  "Cassiopeia", "Schedar", "Gamma Cas",
+  "Cassiopeia", "Gamma Cas", "Ruchbah",
+  "Cassiopeia", "Ruchbah", "Segin",
+
+  # Cygnus
+  "Cygnus", "Deneb", "Sadr",
+  "Cygnus", "Sadr", "Albireo",
+  "Cygnus", "Fawaris", "Sadr",
+  "Cygnus", "Sadr", "Gienah",
+
+  # Canis Major
+  "Canis Major", "Mirzam", "Sirius",
+  "Canis Major", "Sirius", "Wezen",
+  "Canis Major", "Wezen", "Adhara",
+  "Canis Major", "Wezen", "Aludra"
+)
+
+# Convert magnitude to marker size (brighter = lower mag = larger dot)
+stars_data <- stars_data |> 
+  mutate(
+    size_px = scales::rescale(-mag, to = c(7, 18)),
+    hover_info = paste0(
+      "<b>", star, "</b> (", constellation, ")<br>",
+      "<b>Visual Mag:</b> ", mag, "<br>",
+      "<b>Distance:</b> ", dist_ly, " ly<br>",
+      "<b>Class:</b> ", spectral, "<br>",
+      "<em>", lore, "</em>"
+    )
+  )
+
+# Build plotly figure
+fig <- plot_ly()
+
+# Add constellation stick figure lines
+constellations_list <- unique(connections$constellation)
+palette <- c(
+  "Orion" = "#ff9800",
+  "Ursa Major" = "#00e5ff",
+  "Cassiopeia" = "#e040fb",
+  "Cygnus" = "#76ff03",
+  "Canis Major" = "#ffd600"
+)
+
+for (con in constellations_list) {
+  con_lines <- connections |> filter(constellation == con)
+  
+  # Build line segments with NA breaks
+  seg_x <- c()
+  seg_y <- c()
+  
+  for (i in seq_len(nrow(con_lines))) {
+    f_star <- stars_data |> filter(star == con_lines$from[i])
+    t_star <- stars_data |> filter(star == con_lines$to[i])
+    
+    seg_x <- c(seg_x, f_star$ra_deg, t_star$ra_deg, NA)
+    seg_y <- c(seg_y, f_star$dec_deg, t_star$dec_deg, NA)
+  }
+  
+  col <- palette[con]
+  
+  fig <- fig |> 
+    add_trace(
+      x = seg_x,
+      y = seg_y,
+      type = "scatter",
+      mode = "lines",
+      name = paste0(con, " (Lines)"),
+      line = list(color = col, width = 2, dash = "solid"),
+      hoverinfo = "none",
+      showlegend = FALSE
+    )
+}
+
+# Add star nodes for each constellation
+for (con in constellations_list) {
+  con_stars <- stars_data |> filter(constellation == con)
+  col <- palette[con]
+  
+  fig <- fig |> 
+    add_trace(
+      data = con_stars,
+      x = ~ra_deg,
+      y = ~dec_deg,
+      type = "scatter",
+      mode = "markers+text",
+      name = con,
+      text = ~star,
+      textposition = "top center",
+      textfont = list(color = "#ffffff", size = 11),
+      hoverinfo = "text",
+      hovertext = ~hover_info,
+      marker = list(
+        size = ~size_px,
+        color = ~color_hex,
+        line = list(color = col, width = 1.5),
+        opacity = 0.95
+      )
+    )
+}
+
+fig <- fig |> 
+  layout(
+    title = list(
+      text = "Celestial Constellations Sky Map",
+      font = list(color = "navy", size = 17)
+    ),
+    plot_bgcolor = "#080d1a",
+    paper_bgcolor = "#ffffff",
+    xaxis = list(
+      title = "Right Ascension (Degrees)",
+      zeroline = FALSE,
+      gridcolor = "#152238",
+      autorange = "reversed" # Sky maps traditionally display East to the left (reversed RA)
+    ),
+    yaxis = list(
+      title = "Declination (Degrees)",
+      zeroline = TRUE,
+      zerolinecolor = "#2c3e50",
+      gridcolor = "#152238"
+    ),
+    legend = list(
+      orientation = "h",
+      x = 0.05,
+      y = 1.12,
+      font = list(color = "#333", size = 12)
+    ),
+    margin = list(t = 70, b = 50, l = 50, r = 30)
+  )
+
+fig
+```
+
+```{=html}
+<div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #ff9800;">
+    <h4 style="margin: 0 0 8px 0; color: #e65100;">🏹 Orion (The Hunter)</h4>
+    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
+      Anchored by red supergiant Betelgeuse and blazing blue Rigel, Orion is one of the most recognized constellations on Earth. Its three belt stars point directly towards Sirius.
+    </p>
+  </div>
+
+  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #00e5ff;">
+    <h4 style="margin: 0 0 8px 0; color: #00838f;">🐻 Ursa Major (Big Dipper)</h4>
+    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
+      The Great Bear contains the famous Big Dipper asterism. Its outer bowl stars, Merak and Dubhe, act as cosmic pointers leading navigators directly to Polaris (the North Star).
+    </p>
+  </div>
+
+  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #e040fb;">
+    <h4 style="margin: 0 0 8px 0; color: #8e24aa;">👑 Cassiopeia (The Queen)</h4>
+    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
+      Recognizable by its distinctive 'W' or 'M' shape in northern skies, Cassiopeia orbits opposite the Big Dipper around the celestial pole.
+    </p>
+  </div>
+
+  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #76ff03;">
+    <h4 style="margin: 0 0 8px 0; color: #2e7d32;">🦢 Cygnus (The Northern Cross)</h4>
+    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
+      Flying along the Milky Way's galactic plane, Cygnus features supergiant Deneb at its tail and the stunning colored binary star Albireo at its beak.
+    </p>
+  </div>
+
+  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #ffd600;">
+    <h4 style="margin: 0 0 8px 0; color: #f57f17;">🐕 Canis Major (The Great Dog)</h4>
+    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
+      Home to Sirius, the brightest star in Earth's night sky at only 8.6 light-years away, faithfully trailing behind Orion across the winter skies.
+    </p>
+  </div>
+</div>
+```

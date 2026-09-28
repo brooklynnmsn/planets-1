@@ -1,0 +1,37 @@
+---
+title: "Star Similarities"
+format:
+  html:
+    toc: false
+---
+
+```{=html}
+<div style="padding: 22px; border: 2px solid navy; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+  <h3 style="color: navy; margin-top: 0;">Most Similar & Dissimilar Stars</h3>
+  <p style="margin-bottom: 16px;">
+    Select any reference star to view its most similar and most dissimilar counterparts across the galaxy based on spectral traits, temperature, luminosity, and life stage. 
+    Click on any star picture to reveal an in-depth explanation!
+  </p>
+
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 22px;">
+    <label for="ref-star-select" style="font-weight: bold; color: navy; font-size: 15px;">Choose Reference Star:</label>
+    <select id="ref-star-select" style="padding: 8px 12px; font-size: 15px; border-radius: 5px; border: 1px solid #ccc; max-width: 320px;"></select>
+  </div>
+
+  <div style="margin-bottom: 22px;">
+    <h4 style="color: #2e7d32; margin: 0 0 10px 0;">🌟 Most Similar Stars <span style="font-size: 13px; font-weight: normal; color: #555;">(Click an image to learn why)</span></h4>
+    <div id="similar-stars-grid" style="display: flex; gap: 14px; flex-wrap: wrap;"></div>
+  </div>
+
+  <div style="margin-bottom: 22px;">
+    <h4 style="color: #c62828; margin: 0 0 10px 0;">⚡ Most Dissimilar Stars <span style="font-size: 13px; font-weight: normal; color: #555;">(Click an image to learn why)</span></h4>
+    <div id="dissimilar-stars-grid" style="display: flex; gap: 14px; flex-wrap: wrap;"></div>
+  </div>
+
+  <div id="similarity-explanation-box" style="margin-top: 18px; padding: 18px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e0e0e0; min-height: 120px;">
+    <p style="color: #757575; font-style: italic; margin: 0;">Click on any star picture above to see a detailed explanation of why it is similar or dissimilar!</p>
+  </div>
+</div>
+
+<script src="similarity.js"></script>
+```
