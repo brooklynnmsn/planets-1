@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+  <defs>
+    <!-- Saturn Ring Gradient -->
+    <linearGradient id="bgSaturnRing" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(244, 162, 97, 0.4)"/>
+      <stop offset="50%" stop-color="rgba(231, 111, 81, 0.95)"/>
+      <stop offset="100%" stop-color="rgba(244, 162, 97, 0.4)"/>
+    </linearGradient>
+    <!-- Purple Planet Ring Gradient -->
+    <linearGradient id="bgPurpleRing" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(181, 23, 158, 0.3)"/>
+      <stop offset="50%" stop-color="rgba(114, 9, 183, 0.95)"/>
+      <stop offset="100%" stop-color="rgba(181, 23, 158, 0.3)"/>
+    </linearGradient>
+  </defs>
+
+  <g opacity="0.4">
+    <!-- Saturn -->
+    <g transform="translate(70, 70)">
+      <ellipse cx="0" cy="0" rx="18" ry="5.5" fill="none" stroke="url(#bgSaturnRing)" stroke-width="2.5" transform="rotate(-20)" stroke-dasharray="36 36" stroke-dashoffset="18"/>
+      <circle cx="0" cy="0" r="10" fill="#f4a261"/>
+      <ellipse cx="0" cy="0" rx="18" ry="5.5" fill="none" stroke="url(#bgSaturnRing)" stroke-width="2.5" transform="rotate(-20)" stroke-dasharray="36 36" stroke-dashoffset="0"/>
+    </g>
+
+    <!-- Earth -->
+    <g transform="translate(260, 85)">
+      <circle cx="0" cy="0" r="11" fill="#48cae4"/>
+      <circle cx="-3" cy="-2" r="4" fill="#52b788"/>
+      <circle cx="4" cy="4" r="3" fill="#52b788"/>
+    </g>
+
+    <!-- Mars -->
+    <g transform="translate(85, 260)">
+      <circle cx="0" cy="0" r="9" fill="#e76f51"/>
+      <circle cx="-2" cy="-2" r="2" fill="#b23b20"/>
+      <circle cx="3" cy="2" r="1.5" fill="#b23b20"/>
+    </g>
+
+    <!-- Jupiter -->
+    <g transform="translate(280, 275)">
+      <circle cx="0" cy="0" r="13" fill="#e9c46a"/>
+      <line x1="-11" y1="-3.5" x2="11" y2="-3.5" stroke="#f4a261" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="-12" y1="2.5" x2="12" y2="2.5" stroke="#e76f51" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Purple Ringed Planet -->
+    <g transform="translate(175, 175)">
+      <ellipse cx="0" cy="0" rx="15" ry="4.5" fill="none" stroke="url(#bgPurpleRing)" stroke-width="2.2" transform="rotate(15)" stroke-dasharray="30 30" stroke-dashoffset="15"/>
+      <circle cx="0" cy="0" r="8" fill="#b5179e"/>
+      <ellipse cx="0" cy="0" rx="15" ry="4.5" fill="none" stroke="url(#bgPurpleRing)" stroke-width="2.2" transform="rotate(15)" stroke-dasharray="30 30" stroke-dashoffset="0"/>
+    </g>
+
+    <!-- Small Stars & Sparkles -->
+    <circle cx="35" cy="170" r="1.5" fill="#e65100"/>
+    <circle cx="150" cy="55" r="2" fill="#f57c00"/>
+    <circle cx="325" cy="170" r="1.5" fill="#f57c00"/>
+    <circle cx="190" cy="315" r="2" fill="#e65100"/>
+    <circle cx="40" cy="325" r="1.5" fill="#ffa726"/>
+    <circle cx="325" cy="45" r="1.5" fill="#ffa726"/>
+    <circle cx="160" cy="100" r="1.2" fill="#f57c00"/>
+    <circle cx="225" cy="235" r="1.2" fill="#f57c00"/>
+  </g>
+</svg>
