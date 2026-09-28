@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Interactive Constellations – Planets &amp; Nearby Stars</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-3eaf8885052e939fbbbe2bfb513fc417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.12.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Planets &amp; Nearby Stars</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Star Map</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./perspective.html"> 
+<span class="menu-text">Interstellar Perspective</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./similarities.html"> 
+<span class="menu-text">Star Similarities</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./constellations.html" aria-current="page"> 
+<span class="menu-text">Constellations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./compare.html"> 
+<span class="menu-text">Planet vs Star</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./story.html"> 
+<span class="menu-text">The Story &amp; About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Interactive Constellations</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="margin-bottom: 24px; padding: 20px 24px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);">
+  <h3 style="margin-top: 0; color: #0f172a;" class="anchored">Exploring the Night Sky: Constellation Line Graphs</h3>
+  <p style="margin-bottom: 8px; color: #475569; font-size: 15px; line-height: 1.6;">
+    For thousands of years, humans have connected the dots between distant stars to create mythical figures, navigation guides, and seasonal calendars.
+    Use the <strong>constellation dropdown selector</strong> on the chart to focus on an individual constellation, and use the <strong>star selector</strong> below to view in-depth stellar details, lore, and which planets across the galaxy can see this constellation!
+  </p>
+  <p style="margin: 0; font-size: 14px; color: #64748b;">
+    💡 <strong>Tip:</strong> Hover over any star node on the chart to inspect its quick stats.
+  </p>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-833f28af7deafbf206a3" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-833f28af7deafbf206a3">{"x":{"visdat":{"7aee370db33a":["function () ","plotlyVisDat"],"7aee68cc725a":["function () ","data"],"7aee66aaec3d":["function () ","data"],"7aee4e018dfd":["function () ","data"],"7aee251164c5":["function () ","data"],"7aee2aea49f":["function () ","data"]},"cur_data":"7aee2aea49f","attrs":{"7aee370db33a":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":[88.790000000000006,81.280000000000001,null,88.790000000000006,85.189999999999998,null,81.280000000000001,83,null,83,84.049999999999997,null,84.049999999999997,85.189999999999998,null,85.189999999999998,86.939999999999998,null,83,78.629999999999995,null,86.939999999999998,78.629999999999995,null],"y":[7.4100000000000001,6.3499999999999996,null,7.4100000000000001,-1.9399999999999999,null,6.3499999999999996,-0.29999999999999999,null,-0.29999999999999999,-1.2,null,-1.2,-1.9399999999999999,null,-1.9399999999999999,-9.6699999999999999,null,-0.29999999999999999,-8.1999999999999993,null,-9.6699999999999999,-8.1999999999999993,null],"type":"scatter","mode":"lines","name":"Orion (Lines)","line":{"color":"#ff9800","width":2.5},"hoverinfo":"none","visible":true,"showlegend":false,"inherit":true},"7aee68cc725a":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers+text","name":"Orion","text":{},"textposition":"top center","textfont":{"color":"#ffffff","size":12},"hoverinfo":"text","hovertext":{},"marker":{"size":{},"color":{},"line":{"color":"#ff9800","width":2},"opacity":0.94999999999999996},"visible":true,"showlegend":false,"inherit":true},"7aee68cc725a.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":[165.93000000000001,165.46000000000001,null,165.46000000000001,178.46000000000001,null,178.46000000000001,183.86000000000001,null,183.86000000000001,165.93000000000001,null,183.86000000000001,193.50999999999999,null,193.50999999999999,200.97999999999999,null,200.97999999999999,206.88999999999999,null],"y":[61.75,56.380000000000003,null,56.380000000000003,53.689999999999998,null,53.689999999999998,57.030000000000001,null,57.030000000000001,61.75,null,57.030000000000001,55.960000000000001,null,55.960000000000001,54.920000000000002,null,54.920000000000002,49.310000000000002,null],"type":"scatter","mode":"lines","name":"Ursa Major (Lines)","line":{"color":"#00e5ff","width":2.5},"hoverinfo":"none","visible":false,"showlegend":false,"inherit":true},"7aee66aaec3d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers+text","name":"Ursa Major","text":{},"textposition":"top center","textfont":{"color":"#ffffff","size":12},"hoverinfo":"text","hovertext":{},"marker":{"size":{},"color":{},"line":{"color":"#00e5ff","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"inherit":true},"7aee66aaec3d.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":[2.2999999999999998,10.130000000000001,null,10.130000000000001,14.18,null,14.18,20.199999999999999,null,20.199999999999999,26.600000000000001,null],"y":[59.149999999999999,56.539999999999999,null,56.539999999999999,60.719999999999999,null,60.719999999999999,60.229999999999997,null,60.229999999999997,63.670000000000002,null],"type":"scatter","mode":"lines","name":"Cassiopeia (Lines)","line":{"color":"#e040fb","width":2.5},"hoverinfo":"none","visible":false,"showlegend":false,"inherit":true},"7aee4e018dfd":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers+text","name":"Cassiopeia","text":{},"textposition":"top center","textfont":{"color":"#ffffff","size":12},"hoverinfo":"text","hovertext":{},"marker":{"size":{},"color":{},"line":{"color":"#e040fb","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"inherit":true},"7aee4e018dfd.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":[310.29000000000002,305.56,null,305.56,291.80000000000001,null,296.24000000000001,305.56,null,305.56,311.55000000000001,null],"y":[45.280000000000001,40.259999999999998,null,40.259999999999998,27.960000000000001,null,45.130000000000003,40.259999999999998,null,40.259999999999998,33.969999999999999,null],"type":"scatter","mode":"lines","name":"Cygnus (Lines)","line":{"color":"#76ff03","width":2.5},"hoverinfo":"none","visible":false,"showlegend":false,"inherit":true},"7aee251164c5":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers+text","name":"Cygnus","text":{},"textposition":"top center","textfont":{"color":"#ffffff","size":12},"hoverinfo":"text","hovertext":{},"marker":{"size":{},"color":{},"line":{"color":"#76ff03","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"inherit":true},"7aee251164c5.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":[95.680000000000007,101.29000000000001,null,101.29000000000001,107.09999999999999,null,107.09999999999999,104.66,null,107.09999999999999,110.95999999999999,null],"y":[-17.960000000000001,-16.719999999999999,null,-16.719999999999999,-26.390000000000001,null,-26.390000000000001,-28.969999999999999,null,-26.390000000000001,-29.300000000000001,null],"type":"scatter","mode":"lines","name":"Canis Major (Lines)","line":{"color":"#ffd600","width":2.5},"hoverinfo":"none","visible":false,"showlegend":false,"inherit":true},"7aee2aea49f":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers+text","name":"Canis Major","text":{},"textposition":"top center","textfont":{"color":"#ffffff","size":12},"hoverinfo":"text","hovertext":{},"marker":{"size":{},"color":{},"line":{"color":"#ffd600","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"inherit":true}},"layout":{"margin":{"b":50,"l":50,"t":70,"r":30},"title":{"text":"🏹 Orion (The Hunter)","font":{"color":"#0f172a","size":16}},"plot_bgcolor":"#080d1a","paper_bgcolor":"#ffffff","xaxis":{"domain":[0,1],"automargin":true,"title":"Right Ascension (Degrees)","range":[95,73],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Declination (Degrees)","range":[-14,12],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"},"updatemenus":[{"type":"dropdown","direction":"down","active":0,"x":0,"y":1.1499999999999999,"xanchor":"left","yanchor":"top","bgcolor":"#ffffff","bordercolor":"#cbd5e1","borderwidth":1,"font":{"family":"Inter, sans-serif","size":13,"color":"#1e293b"},"buttons":[{"method":"update","args":[{"visible":[true,true,false,false,false,false,false,false,false,false]},{"title":{"text":"🏹 Orion (The Hunter)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[95,73],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[-14,12],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"🏹 Orion (The Hunter)"},{"method":"update","args":[{"visible":[false,false,true,true,false,false,false,false,false,false]},{"title":{"text":"🐻 Ursa Major (Big Dipper)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[215,155],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[45,66],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"🐻 Ursa Major (Big Dipper)"},{"method":"update","args":[{"visible":[false,false,false,false,true,true,false,false,false,false]},{"title":{"text":"👑 Cassiopeia (The Queen)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[33,-3],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[52,68],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"👑 Cassiopeia (The Queen)"},{"method":"update","args":[{"visible":[false,false,false,false,false,false,true,true,false,false]},{"title":{"text":"🦢 Cygnus (The Northern Cross)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[318,285],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[23,50],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"🦢 Cygnus (The Northern Cross)"},{"method":"update","args":[{"visible":[false,false,false,false,false,false,false,false,true,true]},{"title":{"text":"🐕 Canis Major (The Great Dog)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[116,90],"autorange":false,"zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[-34,-12],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"🐕 Canis Major (The Great Dog)"},{"method":"update","args":[{"visible":[true,true,true,true,true,true,true,true,true,true]},{"title":{"text":"🌌 All Constellations (Full Sky Map)","font":{"color":"#0f172a","size":16}},"xaxis":{"title":"Right Ascension (Degrees)","range":[360,0],"autorange":"reversed","zeroline":false,"gridcolor":"#152238"},"yaxis":{"title":"Declination (Degrees)","range":[-35,70],"autorange":false,"zeroline":true,"zerolinecolor":"#2c3e50","gridcolor":"#152238"}}],"label":"🌌 View All Constellations"}]}],"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[88.790000000000006,81.280000000000001,null,88.790000000000006,85.189999999999998,null,81.280000000000001,83,null,83,84.049999999999997,null,84.049999999999997,85.189999999999998,null,85.189999999999998,86.939999999999998,null,83,78.629999999999995,null,86.939999999999998,78.629999999999995],"y":[7.4100000000000001,6.3499999999999996,null,7.4100000000000001,-1.9399999999999999,null,6.3499999999999996,-0.29999999999999999,null,-0.29999999999999999,-1.2,null,-1.2,-1.9399999999999999,null,-1.9399999999999999,-9.6699999999999999,null,-0.29999999999999999,-8.1999999999999993,null,-9.6699999999999999,-8.1999999999999993],"type":"scatter","mode":"lines","name":"Orion (Lines)","line":{"color":"#ff9800","width":2.5},"hoverinfo":["none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none"],"visible":true,"showlegend":false,"marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[88.790000000000006,78.629999999999995,81.280000000000001,86.939999999999998,85.189999999999998,84.049999999999997,83],"y":[7.4100000000000001,-8.1999999999999993,6.3499999999999996,-9.6699999999999999,-1.9399999999999999,-1.2,-0.29999999999999999],"type":"scatter","mode":"markers+text","name":"Orion","text":["Betelgeuse","Rigel","Bellatrix","Saiph","Alnitak","Alnilam","Mintaka"],"textposition":["top center","top center","top center","top center","top center","top center","top center"],"textfont":{"color":"#ffffff","size":12},"hoverinfo":["text","text","text","text","text","text","text"],"hovertext":["<b>Betelgeuse<\/b> (Orion)<br><b>Visual Mag:<\/b> 0.5<br><b>Distance:<\/b> 548 ly<br><b>Class:<\/b> M1-2 Ia-ab (Red Supergiant)<br><em>Right shoulder; pulsating red supergiant nearing supernova.<\/em>","<b>Rigel<\/b> (Orion)<br><b>Visual Mag:<\/b> 0.18<br><b>Distance:<\/b> 860 ly<br><b>Class:<\/b> B8 Ia (Blue Supergiant)<br><em>Left foot; luminous blue supergiant, 120,000x brighter than Sun.<\/em>","<b>Bellatrix<\/b> (Orion)<br><b>Visual Mag:<\/b> 1.64<br><b>Distance:<\/b> 250 ly<br><b>Class:<\/b> B2 III (Blue Giant)<br><em>Left shoulder; known as the Amazon Star.<\/em>","<b>Saiph<\/b> (Orion)<br><b>Visual Mag:<\/b> 2.07<br><b>Distance:<\/b> 650 ly<br><b>Class:<\/b> B0.5 Ia (Supergiant)<br><em>Right foot of the cosmic hunter.<\/em>","<b>Alnitak<\/b> (Orion)<br><b>Visual Mag:<\/b> 1.74<br><b>Distance:<\/b> 1260 ly<br><b>Class:<\/b> O9.7 Ib (Blue Supergiant)<br><em>Eastern star of Orion's Belt; near Flame & Horsehead nebulae.<\/em>","<b>Alnilam<\/b> (Orion)<br><b>Visual Mag:<\/b> 1.69<br><b>Distance:<\/b> 2000 ly<br><b>Class:<\/b> B0 Ia (Blue Supergiant)<br><em>Center star of Orion's Belt.<\/em>","<b>Mintaka<\/b> (Orion)<br><b>Visual Mag:<\/b> 2.25<br><b>Distance:<\/b> 1200 ly<br><b>Class:<\/b> O9.5 II (Bright Giant)<br><em>Western star of Orion's Belt, closely aligned with celestial equator.<\/em>"],"marker":{"color":["#ff7043","#90caf9","#bbdefb","#bbdefb","#90caf9","#90caf9","#90caf9"],"size":[15.517671517671516,16.24948024948025,12.910602910602911,11.927234927234927,12.681912681912682,12.796257796257796,11.515592515592516],"line":{"color":"#ff9800","width":2},"opacity":0.94999999999999996},"visible":true,"showlegend":false,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[165.93000000000001,165.46000000000001,null,165.46000000000001,178.46000000000001,null,178.46000000000001,183.86000000000001,null,183.86000000000001,165.93000000000001,null,183.86000000000001,193.50999999999999,null,193.50999999999999,200.97999999999999,null,200.97999999999999,206.88999999999999],"y":[61.75,56.380000000000003,null,56.380000000000003,53.689999999999998,null,53.689999999999998,57.030000000000001,null,57.030000000000001,61.75,null,57.030000000000001,55.960000000000001,null,55.960000000000001,54.920000000000002,null,54.920000000000002,49.310000000000002],"type":"scatter","mode":"lines","name":"Ursa Major (Lines)","line":{"color":"#00e5ff","width":2.5},"hoverinfo":["none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none",null,"none","none"],"visible":false,"showlegend":false,"marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[165.93000000000001,165.46000000000001,178.46000000000001,183.86000000000001,193.50999999999999,200.97999999999999,206.88999999999999],"y":[61.75,56.380000000000003,53.689999999999998,57.030000000000001,55.960000000000001,54.920000000000002,49.310000000000002],"type":"scatter","mode":"markers+text","name":"Ursa Major","text":["Dubhe","Merak","Phecda","Megrez","Alioth","Mizar","Alkaid"],"textposition":["top center","top center","top center","top center","top center","top center","top center"],"textfont":{"color":"#ffffff","size":12},"hoverinfo":["text","text","text","text","text","text","text"],"hovertext":["<b>Dubhe<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 1.79<br><b>Distance:<\/b> 123 ly<br><b>Class:<\/b> K0 III (Orange Giant)<br><em>Pointer star pointing directly towards Polaris.<\/em>","<b>Merak<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 2.37<br><b>Distance:<\/b> 79 ly<br><b>Class:<\/b> A1 V (White)<br><em>Lower pointer star of the Dipper's bowl.<\/em>","<b>Phecda<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 2.44<br><b>Distance:<\/b> 83 ly<br><b>Class:<\/b> A0 V (White)<br><em>Bottom-inner bowl star of the Big Dipper.<\/em>","<b>Megrez<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 3.32<br><b>Distance:<\/b> 80 ly<br><b>Class:<\/b> A3 V (White)<br><em>Junction joining the bowl to the handle.<\/em>","<b>Alioth<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 1.76<br><b>Distance:<\/b> 82 ly<br><b>Class:<\/b> A1 III-IV (White)<br><em>Brightest star in Ursa Major; base of the handle.<\/em>","<b>Mizar<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 2.23<br><b>Distance:<\/b> 83 ly<br><b>Class:<\/b> A2 V (White)<br><em>Famous double star with companion Alcor, used in ancient eyesight tests.<\/em>","<b>Alkaid<\/b> (Ursa Major)<br><b>Visual Mag:<\/b> 1.85<br><b>Distance:<\/b> 103 ly<br><b>Class:<\/b> B3 V (Blue-White)<br><em>Tip of the Dipper handle; name means Leader of the Daughters.<\/em>"],"marker":{"color":["#ffcc80","#ffffff","#ffffff","#ffffff","#ffffff","#ffffff","#bbdefb"],"size":[12.567567567567567,11.241164241164242,11.081081081081081,9.0686070686070686,12.636174636174635,11.561330561330561,12.43035343035343],"line":{"color":"#00e5ff","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2.2999999999999998,10.130000000000001,null,10.130000000000001,14.18,null,14.18,20.199999999999999,null,20.199999999999999,26.600000000000001],"y":[59.149999999999999,56.539999999999999,null,56.539999999999999,60.719999999999999,null,60.719999999999999,60.229999999999997,null,60.229999999999997,63.670000000000002],"type":"scatter","mode":"lines","name":"Cassiopeia (Lines)","line":{"color":"#e040fb","width":2.5},"hoverinfo":["none","none",null,"none","none",null,"none","none",null,"none","none"],"visible":false,"showlegend":false,"marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2.2999999999999998,10.130000000000001,14.18,20.199999999999999,26.600000000000001],"y":[59.149999999999999,56.539999999999999,60.719999999999999,60.229999999999997,63.670000000000002],"type":"scatter","mode":"markers+text","name":"Cassiopeia","text":["Caph","Schedar","Gamma Cas","Ruchbah","Segin"],"textposition":["top center","top center","top center","top center","top center"],"textfont":{"color":"#ffffff","size":12},"hoverinfo":["text","text","text","text","text"],"hovertext":["<b>Caph<\/b> (Cassiopeia)<br><b>Visual Mag:<\/b> 2.28<br><b>Distance:<\/b> 55 ly<br><b>Class:<\/b> F2 III (Yellow-White)<br><em>Western star of the celestial 'W'.<\/em>","<b>Schedar<\/b> (Cassiopeia)<br><b>Visual Mag:<\/b> 2.24<br><b>Distance:<\/b> 228 ly<br><b>Class:<\/b> K0 IIIa (Orange Giant)<br><em>Heart of Queen Cassiopeia.<\/em>","<b>Gamma Cas<\/b> (Cassiopeia)<br><b>Visual Mag:<\/b> 2.15<br><b>Distance:<\/b> 550 ly<br><b>Class:<\/b> B0.5 IVe (Blue Variable)<br><em>Center peak of the 'W'; violent rapid rotator.<\/em>","<b>Ruchbah<\/b> (Cassiopeia)<br><b>Visual Mag:<\/b> 2.68<br><b>Distance:<\/b> 99 ly<br><b>Class:<\/b> A5 V (White)<br><em>Knee of the seated queen.<\/em>","<b>Segin<\/b> (Cassiopeia)<br><b>Visual Mag:<\/b> 3.35<br><b>Distance:<\/b> 460 ly<br><b>Class:<\/b> B3 III (Blue Giant)<br><em>Eastern tip of the 'W'.<\/em>"],"marker":{"color":["#fff9c4","#ffb74d","#90caf9","#ffffff","#bbdefb"],"size":[11.446985446985448,11.538461538461538,11.744282744282744,10.532224532224532,9],"line":{"color":"#e040fb","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[310.29000000000002,305.56,null,305.56,291.80000000000001,null,296.24000000000001,305.56,null,305.56,311.55000000000001],"y":[45.280000000000001,40.259999999999998,null,40.259999999999998,27.960000000000001,null,45.130000000000003,40.259999999999998,null,40.259999999999998,33.969999999999999],"type":"scatter","mode":"lines","name":"Cygnus (Lines)","line":{"color":"#76ff03","width":2.5},"hoverinfo":["none","none",null,"none","none",null,"none","none",null,"none","none"],"visible":false,"showlegend":false,"marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[310.29000000000002,305.56,291.80000000000001,311.55000000000001,296.24000000000001],"y":[45.280000000000001,40.259999999999998,27.960000000000001,33.969999999999999,45.130000000000003],"type":"scatter","mode":"markers+text","name":"Cygnus","text":["Deneb","Sadr","Albireo","Gienah","Fawaris"],"textposition":["top center","top center","top center","top center","top center"],"textfont":{"color":"#ffffff","size":12},"hoverinfo":["text","text","text","text","text"],"hovertext":["<b>Deneb<\/b> (Cygnus)<br><b>Visual Mag:<\/b> 1.25<br><b>Distance:<\/b> 2615 ly<br><b>Class:<\/b> A2 Ia (White Supergiant)<br><em>Tail of the swan; corner of the Summer Triangle.<\/em>","<b>Sadr<\/b> (Cygnus)<br><b>Visual Mag:<\/b> 2.23<br><b>Distance:<\/b> 1800 ly<br><b>Class:<\/b> F8 Ib (Supergiant)<br><em>Chest of the Swan; intersection of the Northern Cross.<\/em>","<b>Albireo<\/b> (Cygnus)<br><b>Visual Mag:<\/b> 3.05<br><b>Distance:<\/b> 430 ly<br><b>Class:<\/b> K2 II + B8 V (Gold & Blue)<br><em>Beak of the swan; famous striking color binary.<\/em>","<b>Gienah<\/b> (Cygnus)<br><b>Visual Mag:<\/b> 2.48<br><b>Distance:<\/b> 73 ly<br><b>Class:<\/b> K0 III (Giant)<br><em>Eastern wing of the Swan.<\/em>","<b>Fawaris<\/b> (Cygnus)<br><b>Visual Mag:<\/b> 2.86<br><b>Distance:<\/b> 165 ly<br><b>Class:<\/b> B9.5 III (Blue-White)<br><em>Western wing of the Swan.<\/em>"],"marker":{"color":["#ffffff","#fff9c4","#ffa726","#ffcc80","#bbdefb"],"size":[13.802494802494802,11.561330561330561,9.6860706860706873,10.98960498960499,10.120582120582121],"line":{"color":"#76ff03","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[95.680000000000007,101.29000000000001,null,101.29000000000001,107.09999999999999,null,107.09999999999999,104.66,null,107.09999999999999,110.95999999999999],"y":[-17.960000000000001,-16.719999999999999,null,-16.719999999999999,-26.390000000000001,null,-26.390000000000001,-28.969999999999999,null,-26.390000000000001,-29.300000000000001],"type":"scatter","mode":"lines","name":"Canis Major (Lines)","line":{"color":"#ffd600","width":2.5},"hoverinfo":["none","none",null,"none","none",null,"none","none",null,"none","none"],"visible":false,"showlegend":false,"marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[101.29000000000001,95.680000000000007,107.09999999999999,104.66,110.95999999999999],"y":[-16.719999999999999,-17.960000000000001,-26.390000000000001,-28.969999999999999,-29.300000000000001],"type":"scatter","mode":"markers+text","name":"Canis Major","text":["Sirius","Mirzam","Wezen","Adhara","Aludra"],"textposition":["top center","top center","top center","top center","top center"],"textfont":{"color":"#ffffff","size":12},"hoverinfo":["text","text","text","text","text"],"hovertext":["<b>Sirius<\/b> (Canis Major)<br><b>Visual Mag:<\/b> -1.46<br><b>Distance:<\/b> 8.6 ly<br><b>Class:<\/b> A1 V (Bright White)<br><em>Brightest star in Earth's night sky; the Dog Star.<\/em>","<b>Mirzam<\/b> (Canis Major)<br><b>Visual Mag:<\/b> 1.98<br><b>Distance:<\/b> 500 ly<br><b>Class:<\/b> B1 II-III (Blue Giant)<br><em>Announcer star rising just before Sirius.<\/em>","<b>Wezen<\/b> (Canis Major)<br><b>Visual Mag:<\/b> 1.83<br><b>Distance:<\/b> 1600 ly<br><b>Class:<\/b> F8 Ia (Yellow-White Supergiant)<br><em>Weight/rump of the Great Dog.<\/em>","<b>Adhara<\/b> (Canis Major)<br><b>Visual Mag:<\/b> 1.5<br><b>Distance:<\/b> 430 ly<br><b>Class:<\/b> B2 II (Blue Bright Giant)<br><em>One of the brightest ultraviolet emitters in the sky.<\/em>","<b>Aludra<\/b> (Canis Major)<br><b>Visual Mag:<\/b> 2.45<br><b>Distance:<\/b> 2000 ly<br><b>Class:<\/b> B5 Ia (Blue Supergiant)<br><em>Tail tip of the Great Dog.<\/em>"],"marker":{"color":["#e0f7fa","#90caf9","#fff9c4","#90caf9","#90caf9"],"size":[20,12.133056133056133,12.476091476091476,13.23076923076923,11.058212058212057],"line":{"color":"#ffd600","width":2},"opacity":0.94999999999999996},"visible":false,"showlegend":false,"error_y":{"color":"rgba(23,190,207,1)"},"error_x":{"color":"rgba(23,190,207,1)"},"line":{"color":"rgba(23,190,207,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<!-- Interactive Star Details & Planetary Visibility Inspector -->
+<div style="margin-top: 28px; padding: 22px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);">
+  <h3 style="margin-top: 0; color: #0f172a; display: flex; align-items: center; gap: 8px;" class="anchored">
+    <span>🔍</span> Star &amp; Planetary Visibility Inspector
+  </h3>
+  <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">
+    Select any star below to reveal its physical properties, astronomical lore, and exactly which planets and alien worlds have an unobstructed view of this constellation!
+  </p>
+
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+    <div>
+      <label for="constellation-filter" style="display: block; font-weight: 600; font-size: 13px; color: #475569; margin-bottom: 4px;">Constellation:</label>
+      <select id="constellation-filter" style="padding: 8px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; min-width: 200px;">
+        <option value="Orion" selected="">🏹 Orion</option>
+        <option value="Ursa Major">🐻 Ursa Major</option>
+        <option value="Cassiopeia">👑 Cassiopeia</option>
+        <option value="Cygnus">🦢 Cygnus</option>
+        <option value="Canis Major">🐕 Canis Major</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="star-filter" style="display: block; font-weight: 600; font-size: 13px; color: #475569; margin-bottom: 4px;">Select Star:</label>
+      <select id="star-filter" style="padding: 8px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; min-width: 240px;"></select>
+    </div>
+  </div>
+
+  <div id="star-detail-card" style="padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
+    <!-- Injected dynamically via JavaScript -->
+  </div>
+</div>
+
+<script>
+const starDetailsData = {
+  // Orion
+  "Betelgeuse": {
+    constellation: "Orion",
+    mag: 0.50,
+    dist: "548 ly",
+    spectral: "M1-2 Ia-ab (Red Supergiant)",
+    temp: "3,600 K",
+    radius: "~764x Sun",
+    lore: "The distinct orange-red right shoulder of Orion. As an evolved pulsing supergiant, it has consumed its core hydrogen and will end in a brilliant core-collapse supernova within the next 100,000 years.",
+    planets: [
+      { name: "Earth & Solar System Planets", desc: "Clearly visible to the naked eye from Earth, Mars, Jupiter, and Saturn. Mars offers exceptionally sharp views through its dust-free upper atmosphere." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "From Proxima b's twilight sky, Betelgeuse shines with identical brilliance (+0.50 mag). Because Orion is over 500 ly away, parallax shift is negligible (<0.4°)." },
+      { name: "Tau Ceti e & f (11.9 ly)", desc: "Visible in Tau Ceti's sky as a prominent reddish sentinel. From Tau Ceti, our Sun is also visible as an extra 3.5 magnitude star nearby." },
+      { name: "TRAPPIST-1 System (40 ly)", desc: "Unobstructed line of sight; Betelgeuse shines brightly during TRAPPIST-1e's permanent twilight hemisphere." }
+    ]
+  },
+  "Rigel": {
+    constellation: "Orion",
+    mag: 0.18,
+    dist: "860 ly",
+    spectral: "B8 Ia (Blue Supergiant)",
+    temp: "12,100 K",
+    radius: "~79x Sun",
+    lore: "Orion's left foot; a ferocious blue supergiant radiating roughly 120,000 times more energy than our Sun. It is so luminous it illuminates nearby interstellar dust clouds like the Witch Head Nebula.",
+    planets: [
+      { name: "Earth, Mars & Pluto", desc: "Visible across all Solar System worlds. On Pluto (39 AU out), without atmospheric scattering, Rigel blazes against ink-black vacuum with intense ultraviolet radiance." },
+      { name: "Epsilon Eridani b (10.5 ly)", desc: "Clearly visible; Orion's hourglass silhouette remains virtually unaltered from this neighboring orange-dwarf system." },
+      { name: "Ross 128 b (11.0 ly)", desc: "Visible with naked-eye clarity; Rigel provides a stable blue beacon for stellar navigation from Ross 128's orbit." }
+    ]
+  },
+  "Bellatrix": {
+    constellation: "Orion",
+    mag: 1.64,
+    dist: "250 ly",
+    spectral: "B2 III (Blue Giant)",
+    temp: "22,000 K",
+    radius: "~5.7x Sun",
+    lore: "Known since medieval times as the 'Amazon Star', marking the cosmic hunter's left shoulder. It is a massive B-type giant that will eventually shed its outer layers as a white dwarf.",
+    planets: [
+      { name: "Solar System (Mercury through Neptune)", desc: "Visible across all orbital planes in our Solar System." },
+      { name: "Wolf 359 System (7.8 ly)", desc: "Seen high above the planetary orbital plane, guiding orientation." },
+      { name: "Gliese 876 Worlds (15.2 ly)", desc: "Visible to the 4 gas giant and super-Earth planets in this multi-planet system." }
+    ]
+  },
+  "Alnitak": {
+    constellation: "Orion",
+    mag: 1.74,
+    dist: "1,260 ly",
+    spectral: "O9.7 Ib (Blue Supergiant)",
+    temp: "29,500 K",
+    radius: "~20x Sun",
+    lore: "The easternmost star of Orion's Belt. Its intense ultraviolet radiation energizes the famous IC 434 emission region that silhouettes the iconic Horsehead Nebula.",
+    planets: [
+      { name: "Solar System Planets", desc: "Forms the iconic three-star belt easily visible from Earth and Mars." },
+      { name: "Barnard's Star b (6.0 ly)", desc: "Visible in the southern celestial hemisphere of this close red dwarf neighbor." },
+      { name: "LHS 1140 b (49 ly)", desc: "Due to Alnitak's extreme distance (1,260 ly), it remains an unmistakable belt star even 50 light-years from Earth." }
+    ]
+  },
+  "Alnilam": {
+    constellation: "Orion",
+    mag: 1.69,
+    dist: "2,000 ly",
+    spectral: "B0 Ia (Blue Supergiant)",
+    temp: "27,500 K",
+    radius: "~42x Sun",
+    lore: "The central jewel of Orion's Belt. One of the 57 navigational stars used historically by maritime and aerospace navigators across Earth.",
+    planets: [
+      { name: "Inner & Outer Solar Planets", desc: "Visible from all planets with dark skies." },
+      { name: "Kepler-186f (580 ly)", desc: "Visible from the Kepler-186 system, though the belt orientation is skewed by ~15 degrees of parallax." }
+    ]
+  },
+  "Mintaka": {
+    constellation: "Orion",
+    mag: 2.25,
+    dist: "1,200 ly",
+    spectral: "O9.5 II (Bright Giant)",
+    temp: "31,800 K",
+    radius: "~16x Sun",
+    lore: "The westernmost belt star, positioned virtually on the celestial equator, allowing it to be seen equally well from both Earth's North and South poles.",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Serves as a celestial landmark visible equally across both hemispheres." },
+      { name: "Proxima Centauri System (4.2 ly)", desc: "Perfect line of sight; completes the three-star belt in Proxima's night sky." }
+    ]
+  },
+  "Saiph": {
+    constellation: "Orion",
+    mag: 2.07,
+    dist: "650 ly",
+    spectral: "B0.5 Ia (Supergiant)",
+    temp: "26,500 K",
+    radius: "~22x Sun",
+    lore: "The right foot of Orion, balancing Rigel across the southern base. Emits the vast majority of its luminosity in invisible ultraviolet light.",
+    planets: [
+      { name: "Solar System", desc: "Visible from Earth, Mars, and Jupiter's icy moons." },
+      { name: "Tau Ceti System", desc: "Clearly visible as the southern base of the hunter." }
+    ]
+  },
+
+  // Ursa Major
+  "Dubhe": {
+    constellation: "Ursa Major",
+    mag: 1.79,
+    dist: "123 ly",
+    spectral: "K0 III (Orange Giant)",
+    temp: "4,660 K",
+    radius: "~30x Sun",
+    lore: "The upper pointer star of the Big Dipper bowl. Drawing a straight line through Merak and Dubhe points directly towards Polaris.",
+    planets: [
+      { name: "Earth & Mars", desc: "Circumpolar star for northern observers on Earth and Mars; never sets below the horizon in northern latitudes." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "Visible in the deep northern sky, though because Ursa Major is closer (123 ly), Dubhe exhibits ~2° of parallax shift." },
+      { name: "Kepler-452b (1,400 ly)", desc: "From deep in the Cygnus arm, Dubhe merges into the general Milky Way background." }
+    ]
+  },
+  "Merak": {
+    constellation: "Ursa Major",
+    mag: 2.37,
+    dist: "79 ly",
+    spectral: "A1 V (White)",
+    temp: "9,350 K",
+    radius: "~3.0x Sun",
+    lore: "The lower pointer star of the Big Dipper. Merak possesses a circumstellar dust disk similar to Vega, indicating active cometary or debris collisions.",
+    planets: [
+      { name: "Solar System", desc: "Visible from all worlds in our solar system." },
+      { name: "Barnard's Star (6 ly)", desc: "Points toward the northern celestial pole from Barnard's planetary system." }
+    ]
+  },
+  "Phecda": {
+    constellation: "Ursa Major",
+    mag: 2.44,
+    dist: "83 ly",
+    spectral: "A0 V (White)",
+    temp: "9,500 K",
+    radius: "~3.0x Sun",
+    lore: "Forms the bottom-inner corner of the Big Dipper bowl. Part of the Ursa Major Moving Group of stars born together ~300 million years ago.",
+    planets: [
+      { name: "Earth, Venus, Mars", desc: "Prominent northern asterism star." },
+      { name: "Tau Ceti System", desc: "Visible with high clarity in Tau Ceti's northern hemisphere." }
+    ]
+  },
+  "Megrez": {
+    constellation: "Ursa Major",
+    mag: 3.32,
+    dist: "80 ly",
+    spectral: "A3 V (White)",
+    temp: "8,600 K",
+    radius: "~2.0x Sun",
+    lore: "The faintest of the seven Dipper stars, acting as the hinge connecting the bowl to the handle.",
+    planets: [
+      { name: "Solar System Planets", desc: "Easily visible under dark skies from Earth, Mars, and Saturn." },
+      { name: "Ross 128 b", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Alioth": {
+    constellation: "Ursa Major",
+    mag: 1.76,
+    dist: "82 ly",
+    spectral: "A1 III-IV (White)",
+    temp: "9,000 K",
+    radius: "~4.1x Sun",
+    lore: "The brightest star in Ursa Major. It features an intensely strong magnetic field that stratifies chemical elements across its spinning surface.",
+    planets: [
+      { name: "Earth & Mars", desc: "Dominant navigational beacon in northern skies." },
+      { name: "Epsilon Eridani b", desc: "Visible with naked-eye clarity." }
+    ]
+  },
+  "Mizar": {
+    constellation: "Ursa Major",
+    mag: 2.23,
+    dist: "83 ly",
+    spectral: "A2 V (White)",
+    temp: "9,000 K",
+    radius: "~2.4x Sun",
+    lore: "Ancient naked-eye eyesight test paired with Alcor. Historically the first telescopic binary (1650) and first spectroscopic binary ever discovered.",
+    planets: [
+      { name: "Earth, Moon & Mars", desc: "Famous test of optical resolution for observers with transparent skies." },
+      { name: "Proxima Centauri b", desc: "Mizar and Alcor are cleanly resolved into separate stars from Proxima b's skies." }
+    ]
+  },
+  "Alkaid": {
+    constellation: "Ursa Major",
+    mag: 1.85,
+    dist: "103 ly",
+    spectral: "B3 V (Blue-White)",
+    temp: "15,500 K",
+    radius: "~3.4x Sun",
+    lore: "The tip of the Dipper's handle. Unlike most other Dipper stars, Alkaid is not part of the moving group and is traveling through space in an independent direction.",
+    planets: [
+      { name: "Solar System", desc: "Guides stargazers through the 'arc to Arcturus'." },
+      { name: "Tau Ceti System", desc: "Visible in Tau Ceti's northern celestial quadrant." }
+    ]
+  },
+
+  // Cassiopeia
+  "Caph": {
+    constellation: "Cassiopeia",
+    mag: 2.28,
+    dist: "55 ly",
+    spectral: "F2 III (Yellow-White)",
+    temp: "7,000 K",
+    radius: "~3.5x Sun",
+    lore: "Westernmost star of the celestial 'W'. It lies almost directly on the zero-hour line of Right Ascension, used by astronomers to calibrate sky coordinates.",
+    planets: [
+      { name: "Earth, Mars, Jupiter", desc: "Circumpolar beacon in mid-to-high northern latitudes." },
+      { name: "Proxima Centauri System", desc: "From Proxima Centauri, our Sun actually appears inside Cassiopeia as a 0.5 magnitude star, turning the 'W' into a zig-zag '/\/\/' pattern!" }
+    ]
+  },
+  "Schedar": {
+    constellation: "Cassiopeia",
+    mag: 2.24,
+    dist: "228 ly",
+    spectral: "K0 IIIa (Orange Giant)",
+    temp: "4,500 K",
+    radius: "~42x Sun",
+    lore: "The luminous orange heart of the Queen. Schedar has exhausted its core hydrogen fuel and expanded dramatically into giant maturity.",
+    planets: [
+      { name: "Solar System Planets", desc: "Distinctive warm orange hue against northern stars." },
+      { name: "Barnard's Star System", desc: "Visible alongside the Sun in northern skies." }
+    ]
+  },
+  "Gamma Cas": {
+    constellation: "Cassiopeia",
+    mag: 2.15,
+    dist: "550 ly",
+    spectral: "B0.5 IVe (Blue Variable)",
+    temp: "25,000 K",
+    radius: "~10x Sun",
+    lore: "The central peak of the 'W'. It rotates at a blistering 430 km/s (near its breakup speed), hurling an equatorial disk of glowing plasma into surrounding space.",
+    planets: [
+      { name: "Solar System", desc: "Visible with erratic brightening flares." },
+      { name: "TRAPPIST-1 System", desc: "Visible during night-side observations." }
+    ]
+  },
+  "Ruchbah": {
+    constellation: "Cassiopeia",
+    mag: 2.68,
+    dist: "99 ly",
+    spectral: "A5 V (White)",
+    temp: "8,400 K",
+    radius: "~3.9x Sun",
+    lore: "The Queen's knee; an eclipsing binary star system with subtle periodic dips in brightness every 759 days.",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Visible across all northern observing sites." },
+      { name: "Tau Ceti System", desc: "Clearly visible in the northern sky." }
+    ]
+  },
+  "Segin": {
+    constellation: "Cassiopeia",
+    mag: 3.35,
+    dist: "460 ly",
+    spectral: "B3 III (Blue Giant)",
+    temp: "15,000 K",
+    radius: "~6.0x Sun",
+    lore: "The easternmost star of the 'W'. A young, hot helium-burning giant star rapidly expending its core reserves.",
+    planets: [
+      { name: "Solar System", desc: "Marks the eastern boundary of Cassiopeia." },
+      { name: "Wolf 359 System", desc: "Visible in dark unpolluted skies." }
+    ]
+  },
+
+  // Cygnus
+  "Deneb": {
+    constellation: "Cygnus",
+    mag: 1.25,
+    dist: "2,615 ly",
+    spectral: "A2 Ia (White Supergiant)",
+    temp: "8,500 K",
+    radius: "~200x Sun",
+    lore: "The tail of the Swan; one of the most distant and intrinsically luminous stars visible to human eyes. If Deneb were as close as Sirius, it would cast noticeable shadows on Earth at night!",
+    planets: [
+      { name: "Earth & All Solar System Worlds", desc: "Anchors the Summer Triangle alongside Vega and Altair." },
+      { name: "Proxima Centauri b", desc: "Due to Deneb's extreme distance (2,600+ ly), it appears in the exact same spot and brightness from all nearby stars." },
+      { name: "Kepler-22b (600 ly)", desc: "From Kepler-22b's ocean world, Deneb shines nearly 20 times brighter than it does from Earth!" }
+    ]
+  },
+  "Sadr": {
+    constellation: "Cygnus",
+    mag: 2.23,
+    dist: "1,800 ly",
+    spectral: "F8 Ib (Supergiant)",
+    temp: "6,500 K",
+    radius: "~150x Sun",
+    lore: "The chest of the Swan; sits directly at the center of the Northern Cross, surrounded by the glowing hydrogen gas of the diffuse Gamma Cygni Nebula.",
+    planets: [
+      { name: "Solar System Worlds", desc: "Visible embedded in the shimmering Milky Way galactic plane." },
+      { name: "Epsilon Eridani b", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Albireo": {
+    constellation: "Cygnus",
+    mag: 3.05,
+    dist: "430 ly",
+    spectral: "K2 II + B8 V (Gold & Blue)",
+    temp: "4,400 K / 12,000 K",
+    radius: "~60x Sun",
+    lore: "The beak of the Swan; world-famous for its breathtaking contrast through small telescopes—a topaz-gold giant star paired with an electric sapphire companion.",
+    planets: [
+      { name: "Earth & Mars", desc: "One of the most cherished visual targets for planetary astronomers." },
+      { name: "Tau Ceti System", desc: "Resolvable with moderate optical magnification." }
+    ]
+  },
+  "Gienah": {
+    constellation: "Cygnus",
+    mag: 2.48,
+    dist: "73 ly",
+    spectral: "K0 III (Giant)",
+    temp: "4,700 K",
+    radius: "~11x Sun",
+    lore: "The eastern wing of the cosmic swan, gliding gracefully across the northern summer sky.",
+    planets: [
+      { name: "Solar System", desc: "Clearly visible with naked eyes." },
+      { name: "Ross 128 b", desc: "Visible as a prominent wing star." }
+    ]
+  },
+  "Fawaris": {
+    constellation: "Cygnus",
+    mag: 2.86,
+    dist: "165 ly",
+    spectral: "B9.5 III (Blue-White)",
+    temp: "10,000 K",
+    radius: "~4.5x Sun",
+    lore: "The western wingtip of the Swan, also known as Delta Cygni. It is a triple-star system with a high-speed rotational axis.",
+    planets: [
+      { name: "Solar System", desc: "Visible across all northern skies." },
+      { name: "Barnard's Star System", desc: "Clear line of sight." }
+    ]
+  },
+
+  // Canis Major
+  "Sirius": {
+    constellation: "Canis Major",
+    mag: -1.46,
+    dist: "8.6 ly",
+    spectral: "A1 V (Bright White)",
+    temp: "9,940 K",
+    radius: "~1.7x Sun",
+    lore: "The 'Dog Star' and the brightest star in Earth's entire night sky. At just 8.6 light-years away, it is orbited by 'The Pup' (Sirius B), the first white dwarf star ever discovered.",
+    planets: [
+      { name: "Earth, Mars, Europa", desc: "Blazes with incredible dazzling brightness (-1.46 mag), casting faint shadows under pristine mountain skies." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "From Proxima b, Sirius is the brightest star in the sky (mag -1.7), situated near the celestial equator!" },
+      { name: "Tau Ceti System (11.9 ly)", desc: "Visible with intense brilliance only 7.8 light-years away." },
+      { name: "Ross 128 b (11.0 ly)", desc: "Extremely close neighbor at only 6.4 light-years distance, blazing as an ultra-bright beacon." }
+    ]
+  },
+  "Mirzam": {
+    constellation: "Canis Major",
+    mag: 1.98,
+    dist: "500 ly",
+    spectral: "B1 II-III (Blue Giant)",
+    temp: "25,000 K",
+    radius: "~9.7x Sun",
+    lore: "The 'Announcer' star, so named by ancient Arabian astronomers because it rises just minutes before Sirius, heralded by desert travelers.",
+    planets: [
+      { name: "Solar System", desc: "Visible preceding Sirius across the southern sky." },
+      { name: "Wolf 359 System", desc: "Visible in dark night conditions." }
+    ]
+  },
+  "Wezen": {
+    constellation: "Canis Major",
+    mag: 1.83,
+    dist: "1,600 ly",
+    spectral: "F8 Ia (Supergiant)",
+    temp: "6,400 K",
+    radius: "~215x Sun",
+    lore: "The rump of the Great Dog; a colossal yellow-white supergiant. If placed in our Solar System, its surface would extend almost to Earth's orbit!",
+    planets: [
+      { name: "Solar System", desc: "Visible with naked-eye clarity despite its vast 1,600 ly distance." },
+      { name: "Proxima Centauri System", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Adhara": {
+    constellation: "Canis Major",
+    mag: 1.50,
+    dist: "430 ly",
+    spectral: "B2 II (Blue Bright Giant)",
+    temp: "22,000 K",
+    radius: "~14x Sun",
+    lore: "Roughly 4.7 million years ago, Adhara passed within 34 light-years of our Solar System, becoming the single brightest star in Earth's sky at an astonishing magnitude of -3.99 (as bright as Venus)!",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Second brightest star in Canis Major." },
+      { name: "Tau Ceti System", desc: "Visible with high luminosity." }
+    ]
+  },
+  "Aludra": {
+    constellation: "Canis Major",
+    mag: 2.45,
+    dist: "2,000 ly",
+    spectral: "B5 Ia (Blue Supergiant)",
+    temp: "13,500 K",
+    radius: "~54x Sun",
+    lore: "The tip of the dog's tail; a massive luminous supergiant nearing the end of its life, shedding matter at high velocity and destined to explode as a supernova.",
+    planets: [
+      { name: "Solar System", desc: "Visible in the southern celestial sky." },
+      { name: "Barnard's Star System", desc: "Unobstructed line of sight." }
+    ]
+  }
+};
+
+function populateStarFilter() {
+  const conSelect = document.getElementById('constellation-filter');
+  const starSelect = document.getElementById('star-filter');
+  const selectedCon = conSelect.value;
+
+  starSelect.innerHTML = '';
+  Object.keys(starDetailsData).forEach(starName => {
+    if (starDetailsData[starName].constellation === selectedCon) {
+      const opt = document.createElement('option');
+      opt.value = starName;
+      opt.textContent = starName;
+      starSelect.appendChild(opt);
+    }
+  });
+
+  renderStarCard();
+}
+
+function renderStarCard() {
+  const starName = document.getElementById('star-filter').value;
+  const data = starDetailsData[starName];
+  const card = document.getElementById('star-detail-card');
+
+  if (!data) return;
+
+  let planetsHtml = data.planets.map(p => `
+    <div style="margin-bottom: 10px; padding: 10px 14px; background: #ffffff; border-radius: 8px; border-left: 3px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+      <strong style="color: #1e3a8a; font-size: 14px;">🪐 ${p.name}:</strong>
+      <p style="margin: 4px 0 0 0; font-size: 13.5px; color: #475569; line-height: 1.5;">${p.desc}</p>
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+      <div>
+        <h3 style="margin: 0; color: #0f172a; font-size: 20px;">⭐ ${starName}</h3>
+        <span style="font-size: 13px; color: #64748b; font-weight: 500;">Constellation: ${data.constellation}</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #e0f2fe; color: #0369a1;">Mag: ${data.mag}</span>
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #fef3c7; color: #b45309;">Dist: ${data.dist}</span>
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #f3e8ff; color: #7e22ce;">Temp: ${data.temp}</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 18px;">
+      <div style="padding: 12px; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;">Spectral Classification</div>
+        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px;">${data.spectral}</div>
+      </div>
+      <div style="padding: 12px; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;">Estimated Radius</div>
+        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px;">${data.radius}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h4 style="margin: 0 0 6px 0; color: #334155; font-size: 14px; font-weight: 700; text-transform: uppercase;">📜 Astronomical & Mythological Lore</h4>
+      <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #475569;">${data.lore}</p>
+    </div>
+
+    <div>
+      <h4 style="margin: 0 0 10px 0; color: #1e3a8a; font-size: 14px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px;">
+        <span>🌍</span> Planets & Worlds That Can See This Constellation
+      </h4>
+      <div>${planetsHtml}</div>
+    </div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('constellation-filter').addEventListener('change', populateStarFilter);
+  document.getElementById('star-filter').addEventListener('change', renderStarCard);
+  populateStarFilter();
+});
+</script>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/brooklynnmsn\.github\.io\/planets-1\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

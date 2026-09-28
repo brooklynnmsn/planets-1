@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nearby Stars & Solar Systems",
+    "section": "",
+    "text": "Star Information\n  Click any star marker on the map to reveal its name, photo, and summary!"
+  },
+  {
+    "objectID": "story.html",
+    "href": "story.html",
+    "title": "The Story & About",
+    "section": "",
+    "text": "When we gaze up into a clear night sky, stars appear as fixed points of light pinned against an eternal dome. But in reality, we are traveling through a dynamic three-dimensional ocean of stars, each with its own lifecycle, temperature, and planetary system.\n    This project was created to make that stellar neighborhood tangible, interactive, and explorable."
+  },
+  {
+    "objectID": "story.html#breaking-down-the-site-a-guided-tour",
+    "href": "story.html#breaking-down-the-site-a-guided-tour",
+    "title": "The Story & About",
+    "section": "🗺️ Breaking Down the Site: A Guided Tour",
+    "text": "🗺️ Breaking Down the Site: A Guided Tour\nEach page on this website illuminates a different dimension of our surrounding galaxy:\n\n1. Star Map (index.qmd)\n\nThe Concept: Plots over 2,000 nearby stars centered around our Solar System (Earth & the Sun) within a ~75 light-year radius.\nKey Insight: Highlighted in vibrant green are stars hosting confirmed planetary systems (such as Proxima Centauri, Tau Ceti, and Gliese 876).\nInteractive Inspection: Clicking any star immediately pulls up its full profile—spectral classification, surface temperature, atmospheric chemistry, and an estimation of its closeness to end-of-life explosion.\n\n\n\n2. Interstellar Perspective (perspective.qmd)\n\nThe Concept: Breaks free from Earth-centric thinking by re-calculating the distances to all surrounding stars from the vantage point of any world.\nKey Insight: If you stood on Pluto, Ceres, or an exoplanet orbiting another star, which stars become your closest celestial neighbors? The interactive line chart traces these shifting astronomical relationships.\n\n\n\n3. Star Similarities (similarities.qmd)\n\nThe Concept: Identifies mathematical and physical twins among neighboring stars by scoring their size, temperature, luminosity, and life stage.\nKey Insight: You can discover which stars closely match our Sun (like Rigil Kentaurus or Achird) and which represent bizarre cosmic opposites—such as dense white dwarf remnants and ultra-cool red dwarfs.\n\n\n\n4. Interactive Constellations (constellations.qmd)\n\nThe Concept: Maps the recognizable stick-figure asterisms that humanity has traced across the night sky for thousands of years.\nKey Insight: Bridges the gap between ancient mythology and modern astrophysics, displaying visual magnitude, distance, and historical lore for constellations like Orion, Ursa Major, and Cassiopeia."
+  },
+  {
+    "objectID": "story.html#the-publics-fascination-with-stars-planets",
+    "href": "story.html#the-publics-fascination-with-stars-planets",
+    "title": "The Story & About",
+    "section": "🔭 The Public’s Fascination with Stars & Planets",
+    "text": "🔭 The Public’s Fascination with Stars & Planets\nWhy do stars and exoplanets command such an enduring grip on the public imagination?\n\nThe Search for Another Earth (“Are We Alone?”)\nFor most of human history, astronomers were unsure whether planets even existed outside our Solar System. Since the first confirmed discovery of an exoplanet in the 1990s, NASA and international observatories have confirmed over 5,500 exoplanets. The public is captivated by the search for habitable zones (the “Goldilocks” distance from a host star where liquid water can pool on a rocky surface), igniting hopes of finding biosignatures or communicating with extraterrestrial intelligence.\n\n\nThe Cosmic Mirror & Interstellar Dreams\nPopular culture—from Star Trek and Interstellar to the latest deep-field imagery from the James Webb Space Telescope—reflects humanity’s desire to explore. Seeing that stars like Proxima Centauri and Barnard’s Star lie just a few light-years away transforms interstellar space from an abstract vacuum into a tangible frontier for future robotic probes like Breakthrough Starshot.\n\n\nStellar Mortality & Drama\nStars are not immortal. The dramatic life cycle of stars—from main-sequence steadiness to red giant expansion, supernovae, and collapsed white dwarfs—offers a gripping cosmic drama. The public’s intense interest whenever red supergiants like Betelgeuse dim or flicker underscores our collective awe at nature’s largest explosions."
+  },
+  {
+    "objectID": "story.html#ℹ-about-the-project-methodology",
+    "href": "story.html#ℹ-about-the-project-methodology",
+    "title": "The Story & About",
+    "section": "ℹ️ About the Project & Methodology",
+    "text": "ℹ️ About the Project & Methodology\n\nData Sources\n\nNASA Exoplanet Archive: Confirmed exoplanet counts, host star properties, and orbital characteristics.\nNearby Stars Catalog (Hipparcos & Gaia Data): Stellar distances (in light-years), 3D Cartesian coordinates \\((x, y, z)\\), visual magnitudes, spectral classifications, and calculated surface temperatures.\n\n\n\nComputational Stack\n\nQuarto: Multi-page website framework combining narrative text, R computation, and web presentation.\nR & Tidyverse (dplyr, readr, scales): Data cleaning, variable transformation, and catalog wrangling.\nPlotly & HTMLWidgets: High-performance, interactive WebGL and SVG charts with responsive hover and click events.\nCustom CSS & SVG Graphics: Custom responsive layouts, styling, and seamless drifting celestial background animations."
+  },
+  {
+    "objectID": "perspective.html",
+    "href": "perspective.html",
+    "title": "Interstellar Perspective",
+    "section": "",
+    "text": "Distance to Neighboring Stars from Any Planet\n  \n    Select any major planet, dwarf planet (like Pluto, Ceres, Eris, Haumea, or Makemake), or distant exoplanet to see a line graph comparing how close the neighboring stars are from that world versus from Earth:\n  \n\n  \n    Choose Planet / Dwarf Planet:\n    \n\n    Display Stars:\n    \n      Nearest & Most Dissimilar Stars\n      Nearest Neighbors Only\n      Most Dissimilar (Farthest) Stars Only\n    \n  \n\n  \n    Loading planet profile..."
+  },
+  {
+    "objectID": "similarities.html",
+    "href": "similarities.html",
+    "title": "Star Similarities",
+    "section": "",
+    "text": "Most Similar & Dissimilar Stars\n  \n    Select any reference star to view its most similar and most dissimilar counterparts across the galaxy based on spectral traits, temperature, luminosity, and life stage. \n    Click on any star picture to reveal an in-depth explanation!\n  \n\n  \n    Choose Reference Star:\n    \n  \n\n  \n    🌟 Most Similar Stars (Click an image to learn why)\n    \n  \n\n  \n    ⚡ Most Dissimilar Stars (Click an image to learn why)\n    \n  \n\n  \n    Click on any star picture above to see a detailed explanation of why it is similar or dissimilar!"
+  },
+  {
+    "objectID": "constellations.html",
+    "href": "constellations.html",
+    "title": "Interactive Constellations",
+    "section": "",
+    "text": "Exploring the Night Sky: Constellation Line Graphs\n  \n    For thousands of years, humans have connected the dots between distant stars to create mythical figures, navigation guides, and seasonal calendars.\n    Use the constellation dropdown selector on the chart to focus on an individual constellation, and use the star selector below to view in-depth stellar details, lore, and which planets across the galaxy can see this constellation!\n  \n  \n    💡 Tip: Hover over any star node on the chart to inspect its quick stats.\n  \n\n\n\n\n\n\n\n\n\n  \n    🔍 Star & Planetary Visibility Inspector\n  \n  \n    Select any star below to reveal its physical properties, astronomical lore, and exactly which planets and alien worlds have an unobstructed view of this constellation!\n  \n\n  \n    \n      Constellation:\n      \n        🏹 Orion\n        🐻 Ursa Major\n        👑 Cassiopeia\n        🦢 Cygnus\n        🐕 Canis Major\n      \n    \n\n    \n      Select Star:"
+  },
+  {
+    "objectID": "planets.html",
+    "href": "planets.html",
+    "title": "Planets & Nearby Stars",
+    "section": "",
+    "text": "Star Information\n  Click any star marker on the map to reveal its name, photo, and summary!\n\n\n\n\n  Interstellar Perspective: Distance to Neighboring Stars from Any Planet\n  \n    Select any major planet, dwarf planet (like Pluto, Ceres, Eris, Haumea, or Makemake), or distant exoplanet to see a line graph comparing how close the neighboring stars are from that world versus from Earth:\n  \n\n  \n    Choose Planet / Dwarf Planet:\n    \n\n    Display Stars:\n    \n      Nearest & Most Dissimilar Stars\n      Nearest Neighbors Only\n      Most Dissimilar (Farthest) Stars Only\n    \n  \n\n  \n    Loading planet profile...\n  \n\n  \n\n\n\n\n\n  Most Similar & Dissimilar Stars\n  \n    Select any reference star to view its most similar and most dissimilar counterparts across the galaxy. \n    Click on any star picture to reveal an in-depth explanation of why they are similar or dissimilar!\n  \n\n  \n    Choose Reference Star:\n    \n  \n\n  \n    🌟 Most Similar Stars (Click an image to learn why)\n    \n  \n\n  \n    ⚡ Most Dissimilar Stars (Click an image to learn why)\n    \n  \n\n  \n    Click on any star picture above to see a detailed explanation of why it is similar or dissimilar!"
+  },
+  {
+    "objectID": "compare.html",
+    "href": "compare.html",
+    "title": "Planet vs Star Comparison",
+    "section": "",
+    "text": "🪐 Planet vs ☀️ Star Comparative Explorer\n  \n    At first glance, both planets and stars are spherical celestial bodies orbiting through galaxies. But fundamentally, they occupy entirely different realms of physics and chemistry: \n    stars are colossal engines of thermonuclear fusion burning ionized plasma, while planets are cooled, non-fusing worlds composed of solid rock, liquids, and molecular gases.\n  \n  \n    Select any planet (from our Solar System or distant exoplanet systems) and any star to inspect their side-by-side differences in composition, scale, internal physics, and lifespan!\n  \n\n\n\n\n  \n    \n      🪐 Select Planet / Exoplanet:\n    \n    \n      \n        Earth (Rocky Ocean World)\n        Jupiter (Gas Giant)\n        Mars (Desert Terrestrial)\n        Saturn (Ringed Gas Giant)\n        Neptune (Ice Giant)\n        Pluto (Dwarf Planet)\n      \n      \n        Proxima Centauri b (Habitable Zone Terrestrial)\n        TRAPPIST-1e (Earth-Sized Rocky Exoplanet)\n        Kepler-452b (Super-Earth / Older Cousin)\n        WASP-12b (Ultra-Hot Tidally Torn Jupiter)\n      \n    \n  \n\n  \n    \n      ☀️ Select Star:\n    \n    \n      \n        The Sun (Yellow Dwarf G2V)\n        Proxima Centauri (Red Dwarf M5Ve)\n        Sirius A (Luminous White A1V)\n        Betelgeuse (Red Supergiant M1-2Ia)\n        Rigel (Blue Supergiant B8Ia)\n      \n      \n        Vega (Rapid Rotator A0V)\n        Sirius B (Degenerate White Dwarf)\n        Aldebaran (Orange Giant K5III)"
+  }
+]
