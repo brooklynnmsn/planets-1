@@ -7,14 +7,14 @@ execute:
 ---
 
 ```{=html}
-<div style="margin-bottom: 20px; padding: 18px 22px; border: 2px solid navy; border-radius: 8px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-  <h3 style="color: navy; margin-top: 0;">Exploring the Night Sky: Constellation Line Graphs</h3>
-  <p style="margin-bottom: 8px; color: #333;">
-    For thousands of years, humans have connected the dots between distant stars to create mythological figures, navigation guides, and seasonal calendars.
-    Below is an interactive constellation chart mapping major constellations across the celestial sphere.
+<div style="margin-bottom: 24px; padding: 20px 24px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);">
+  <h3 style="margin-top: 0; color: #0f172a;">Exploring the Night Sky: Constellation Line Graphs</h3>
+  <p style="margin-bottom: 8px; color: #475569; font-size: 15px; line-height: 1.6;">
+    For thousands of years, humans have connected the dots between distant stars to create mythical figures, navigation guides, and seasonal calendars.
+    Use the <strong>constellation dropdown selector</strong> on the chart to focus on an individual constellation, and use the <strong>star selector</strong> below to view in-depth stellar details, lore, and which planets across the galaxy can see this constellation!
   </p>
-  <p style="margin: 0; font-size: 14px; color: #555;">
-    💡 <strong>Tip:</strong> Hover over any star to inspect its name, magnitude, distance, and spectral color. Click on constellation names in the legend to toggle them on or off!
+  <p style="margin: 0; font-size: 14px; color: #64748b;">
+    💡 <strong>Tip:</strong> Hover over any star node on the chart to inspect its quick stats.
   </p>
 </div>
 ```
@@ -23,12 +23,12 @@ execute:
 library(tidyverse)
 library(plotly)
 
-# Define stars with celestial coordinates (RA in hours converted to deg, Dec in deg),
+# Define stars with celestial coordinates (RA and Dec in degrees),
 # visual magnitude, distance in ly, color, and lore.
 stars_data <- tribble(
   ~star, ~constellation, ~ra_deg, ~dec_deg, ~mag, ~dist_ly, ~color_hex, ~spectral, ~lore,
   # Orion (The Hunter)
-  "Betelgeuse", "Orion", 88.79, 7.41, 0.5, 548, "#ff7043", "M1-2 Ia-ab (Red Supergiant)", "Right shoulder; pulsing red supergiant nearing supernova.",
+  "Betelgeuse", "Orion", 88.79, 7.41, 0.5, 548, "#ff7043", "M1-2 Ia-ab (Red Supergiant)", "Right shoulder; pulsating red supergiant nearing supernova.",
   "Rigel", "Orion", 78.63, -8.20, 0.18, 860, "#90caf9", "B8 Ia (Blue Supergiant)", "Left foot; luminous blue supergiant, 120,000x brighter than Sun.",
   "Bellatrix", "Orion", 81.28, 6.35, 1.64, 250, "#bbdefb", "B2 III (Blue Giant)", "Left shoulder; known as the Amazon Star.",
   "Saiph", "Orion", 86.94, -9.67, 2.07, 650, "#bbdefb", "B0.5 Ia (Supergiant)", "Right foot of the cosmic hunter.",
@@ -37,7 +37,7 @@ stars_data <- tribble(
   "Mintaka", "Orion", 83.00, -0.30, 2.25, 1200, "#90caf9", "O9.5 II (Bright Giant)", "Western star of Orion's Belt, closely aligned with celestial equator.",
 
   # Ursa Major (Big Dipper)
-  "Dubhe", "Ursa Major", 165.93, 61.75, 1.79, 123, "#ffcc80", "K0 III (Orange Giant)", "Pointers star pointing directly towards Polaris.",
+  "Dubhe", "Ursa Major", 165.93, 61.75, 1.79, 123, "#ffcc80", "K0 III (Orange Giant)", "Pointer star pointing directly towards Polaris.",
   "Merak", "Ursa Major", 165.46, 56.38, 2.37, 79, "#ffffff", "A1 V (White)", "Lower pointer star of the Dipper's bowl.",
   "Phecda", "Ursa Major", 178.46, 53.69, 2.44, 83, "#ffffff", "A0 V (White)", "Bottom-inner bowl star of the Big Dipper.",
   "Megrez", "Ursa Major", 183.86, 57.03, 3.32, 80, "#ffffff", "A3 V (White)", "Junction joining the bowl to the handle.",
@@ -108,10 +108,10 @@ connections <- tribble(
   "Canis Major", "Wezen", "Aludra"
 )
 
-# Convert magnitude to marker size (brighter = lower mag = larger dot)
+# Convert magnitude to marker size
 stars_data <- stars_data |> 
   mutate(
-    size_px = scales::rescale(-mag, to = c(7, 18)),
+    size_px = scales::rescale(-mag, to = c(9, 20)),
     hover_info = paste0(
       "<b>", star, "</b> (", constellation, ")<br>",
       "<b>Visual Mag:</b> ", mag, "<br>",
@@ -121,11 +121,7 @@ stars_data <- stars_data |>
     )
   )
 
-# Build plotly figure
-fig <- plot_ly()
-
-# Add constellation stick figure lines
-constellations_list <- unique(connections$constellation)
+constellations_list <- c("Orion", "Ursa Major", "Cassiopeia", "Cygnus", "Canis Major")
 palette <- c(
   "Orion" = "#ff9800",
   "Ursa Major" = "#00e5ff",
@@ -134,23 +130,23 @@ palette <- c(
   "Canis Major" = "#ffd600"
 )
 
-for (con in constellations_list) {
+fig <- plot_ly()
+
+for (i in seq_along(constellations_list)) {
+  con <- constellations_list[i]
   con_lines <- connections |> filter(constellation == con)
+  col <- palette[con]
   
-  # Build line segments with NA breaks
   seg_x <- c()
   seg_y <- c()
-  
-  for (i in seq_len(nrow(con_lines))) {
-    f_star <- stars_data |> filter(star == con_lines$from[i])
-    t_star <- stars_data |> filter(star == con_lines$to[i])
-    
+  for (j in seq_len(nrow(con_lines))) {
+    f_star <- stars_data |> filter(star == con_lines$from[j])
+    t_star <- stars_data |> filter(star == con_lines$to[j])
     seg_x <- c(seg_x, f_star$ra_deg, t_star$ra_deg, NA)
     seg_y <- c(seg_y, f_star$dec_deg, t_star$dec_deg, NA)
   }
   
-  col <- palette[con]
-  
+  # Lines trace
   fig <- fig |> 
     add_trace(
       x = seg_x,
@@ -158,17 +154,14 @@ for (con in constellations_list) {
       type = "scatter",
       mode = "lines",
       name = paste0(con, " (Lines)"),
-      line = list(color = col, width = 2, dash = "solid"),
+      line = list(color = col, width = 2.5),
       hoverinfo = "none",
+      visible = (i == 1),
       showlegend = FALSE
     )
-}
-
-# Add star nodes for each constellation
-for (con in constellations_list) {
+    
+  # Stars trace
   con_stars <- stars_data |> filter(constellation == con)
-  col <- palette[con]
-  
   fig <- fig |> 
     add_trace(
       data = con_stars,
@@ -179,43 +172,145 @@ for (con in constellations_list) {
       name = con,
       text = ~star,
       textposition = "top center",
-      textfont = list(color = "#ffffff", size = 11),
+      textfont = list(color = "#ffffff", size = 12),
       hoverinfo = "text",
       hovertext = ~hover_info,
       marker = list(
         size = ~size_px,
         color = ~color_hex,
-        line = list(color = col, width = 1.5),
+        line = list(color = col, width = 2),
         opacity = 0.95
-      )
+      ),
+      visible = (i == 1),
+      showlegend = FALSE
     )
 }
+
+make_vis <- function(active_idx) {
+  vis <- rep(FALSE, length(constellations_list) * 2)
+  if (active_idx == 0) {
+    return(as.list(rep(TRUE, length(constellations_list) * 2)))
+  }
+  line_idx <- 2 * active_idx - 1
+  star_idx <- 2 * active_idx
+  vis[line_idx] <- TRUE
+  vis[star_idx] <- TRUE
+  as.list(vis)
+}
+
+buttons <- list(
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(1)),
+      list(
+        title = list(text = "🏹 Orion (The Hunter)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(95, 73), autorange = FALSE, zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(-14, 12), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "🏹 Orion (The Hunter)"
+  ),
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(2)),
+      list(
+        title = list(text = "🐻 Ursa Major (Big Dipper)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(215, 155), autorange = FALSE, zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(45, 66), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "🐻 Ursa Major (Big Dipper)"
+  ),
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(3)),
+      list(
+        title = list(text = "👑 Cassiopeia (The Queen)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(33, -3), autorange = FALSE, zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(52, 68), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "👑 Cassiopeia (The Queen)"
+  ),
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(4)),
+      list(
+        title = list(text = "🦢 Cygnus (The Northern Cross)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(318, 285), autorange = FALSE, zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(23, 50), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "🦢 Cygnus (The Northern Cross)"
+  ),
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(5)),
+      list(
+        title = list(text = "🐕 Canis Major (The Great Dog)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(116, 90), autorange = FALSE, zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(-34, -12), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "🐕 Canis Major (The Great Dog)"
+  ),
+  list(
+    method = "update",
+    args = list(
+      list(visible = make_vis(0)),
+      list(
+        title = list(text = "🌌 All Constellations (Full Sky Map)", font = list(color = "#0f172a", size = 16)),
+        xaxis = list(title = "Right Ascension (Degrees)", range = c(360, 0), autorange = "reversed", zeroline = FALSE, gridcolor = "#152238"),
+        yaxis = list(title = "Declination (Degrees)", range = c(-35, 70), autorange = FALSE, zeroline = TRUE, zerolinecolor = "#2c3e50", gridcolor = "#152238")
+      )
+    ),
+    label = "🌌 View All Constellations"
+  )
+)
 
 fig <- fig |> 
   layout(
     title = list(
-      text = "Celestial Constellations Sky Map",
-      font = list(color = "navy", size = 17)
+      text = "🏹 Orion (The Hunter)",
+      font = list(color = "#0f172a", size = 16)
     ),
     plot_bgcolor = "#080d1a",
     paper_bgcolor = "#ffffff",
     xaxis = list(
       title = "Right Ascension (Degrees)",
+      range = c(95, 73),
+      autorange = FALSE,
       zeroline = FALSE,
-      gridcolor = "#152238",
-      autorange = "reversed" # Sky maps traditionally display East to the left (reversed RA)
+      gridcolor = "#152238"
     ),
     yaxis = list(
       title = "Declination (Degrees)",
+      range = c(-14, 12),
+      autorange = FALSE,
       zeroline = TRUE,
       zerolinecolor = "#2c3e50",
       gridcolor = "#152238"
     ),
-    legend = list(
-      orientation = "h",
-      x = 0.05,
-      y = 1.12,
-      font = list(color = "#333", size = 12)
+    updatemenus = list(
+      list(
+        type = "dropdown",
+        direction = "down",
+        active = 0,
+        x = 0.0,
+        y = 1.15,
+        xanchor = "left",
+        yanchor = "top",
+        bgcolor = "#ffffff",
+        bordercolor = "#cbd5e1",
+        borderwidth = 1,
+        font = list(family = "Inter, sans-serif", size = 13, color = "#1e293b"),
+        buttons = buttons
+      )
     ),
     margin = list(t = 70, b = 50, l = 50, r = 30)
   )
@@ -224,40 +319,511 @@ fig
 ```
 
 ```{=html}
-<div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #ff9800;">
-    <h4 style="margin: 0 0 8px 0; color: #e65100;">🏹 Orion (The Hunter)</h4>
-    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
-      Anchored by red supergiant Betelgeuse and blazing blue Rigel, Orion is one of the most recognized constellations on Earth. Its three belt stars point directly towards Sirius.
-    </p>
+<!-- Interactive Star Details & Planetary Visibility Inspector -->
+<div style="margin-top: 28px; padding: 22px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);">
+  <h3 style="margin-top: 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+    <span>🔍</span> Star & Planetary Visibility Inspector
+  </h3>
+  <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">
+    Select any star below to reveal its physical properties, astronomical lore, and exactly which planets and alien worlds have an unobstructed view of this constellation!
+  </p>
+
+  <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+    <div>
+      <label for="constellation-filter" style="display: block; font-weight: 600; font-size: 13px; color: #475569; margin-bottom: 4px;">Constellation:</label>
+      <select id="constellation-filter" style="padding: 8px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; min-width: 200px;">
+        <option value="Orion" selected>🏹 Orion</option>
+        <option value="Ursa Major">🐻 Ursa Major</option>
+        <option value="Cassiopeia">👑 Cassiopeia</option>
+        <option value="Cygnus">🦢 Cygnus</option>
+        <option value="Canis Major">🐕 Canis Major</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="star-filter" style="display: block; font-weight: 600; font-size: 13px; color: #475569; margin-bottom: 4px;">Select Star:</label>
+      <select id="star-filter" style="padding: 8px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; min-width: 240px;"></select>
+    </div>
   </div>
 
-  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #00e5ff;">
-    <h4 style="margin: 0 0 8px 0; color: #00838f;">🐻 Ursa Major (Big Dipper)</h4>
-    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
-      The Great Bear contains the famous Big Dipper asterism. Its outer bowl stars, Merak and Dubhe, act as cosmic pointers leading navigators directly to Polaris (the North Star).
-    </p>
-  </div>
-
-  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #e040fb;">
-    <h4 style="margin: 0 0 8px 0; color: #8e24aa;">👑 Cassiopeia (The Queen)</h4>
-    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
-      Recognizable by its distinctive 'W' or 'M' shape in northern skies, Cassiopeia orbits opposite the Big Dipper around the celestial pole.
-    </p>
-  </div>
-
-  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #76ff03;">
-    <h4 style="margin: 0 0 8px 0; color: #2e7d32;">🦢 Cygnus (The Northern Cross)</h4>
-    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
-      Flying along the Milky Way's galactic plane, Cygnus features supergiant Deneb at its tail and the stunning colored binary star Albireo at its beak.
-    </p>
-  </div>
-
-  <div style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; border-top: 4px solid #ffd600;">
-    <h4 style="margin: 0 0 8px 0; color: #f57f17;">🐕 Canis Major (The Great Dog)</h4>
-    <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: #424242;">
-      Home to Sirius, the brightest star in Earth's night sky at only 8.6 light-years away, faithfully trailing behind Orion across the winter skies.
-    </p>
+  <div id="star-detail-card" style="padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
+    <!-- Injected dynamically via JavaScript -->
   </div>
 </div>
+
+<script>
+const starDetailsData = {
+  // Orion
+  "Betelgeuse": {
+    constellation: "Orion",
+    mag: 0.50,
+    dist: "548 ly",
+    spectral: "M1-2 Ia-ab (Red Supergiant)",
+    temp: "3,600 K",
+    radius: "~764x Sun",
+    lore: "The distinct orange-red right shoulder of Orion. As an evolved pulsing supergiant, it has consumed its core hydrogen and will end in a brilliant core-collapse supernova within the next 100,000 years.",
+    planets: [
+      { name: "Earth & Solar System Planets", desc: "Clearly visible to the naked eye from Earth, Mars, Jupiter, and Saturn. Mars offers exceptionally sharp views through its dust-free upper atmosphere." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "From Proxima b's twilight sky, Betelgeuse shines with identical brilliance (+0.50 mag). Because Orion is over 500 ly away, parallax shift is negligible (<0.4°)." },
+      { name: "Tau Ceti e & f (11.9 ly)", desc: "Visible in Tau Ceti's sky as a prominent reddish sentinel. From Tau Ceti, our Sun is also visible as an extra 3.5 magnitude star nearby." },
+      { name: "TRAPPIST-1 System (40 ly)", desc: "Unobstructed line of sight; Betelgeuse shines brightly during TRAPPIST-1e's permanent twilight hemisphere." }
+    ]
+  },
+  "Rigel": {
+    constellation: "Orion",
+    mag: 0.18,
+    dist: "860 ly",
+    spectral: "B8 Ia (Blue Supergiant)",
+    temp: "12,100 K",
+    radius: "~79x Sun",
+    lore: "Orion's left foot; a ferocious blue supergiant radiating roughly 120,000 times more energy than our Sun. It is so luminous it illuminates nearby interstellar dust clouds like the Witch Head Nebula.",
+    planets: [
+      { name: "Earth, Mars & Pluto", desc: "Visible across all Solar System worlds. On Pluto (39 AU out), without atmospheric scattering, Rigel blazes against ink-black vacuum with intense ultraviolet radiance." },
+      { name: "Epsilon Eridani b (10.5 ly)", desc: "Clearly visible; Orion's hourglass silhouette remains virtually unaltered from this neighboring orange-dwarf system." },
+      { name: "Ross 128 b (11.0 ly)", desc: "Visible with naked-eye clarity; Rigel provides a stable blue beacon for stellar navigation from Ross 128's orbit." }
+    ]
+  },
+  "Bellatrix": {
+    constellation: "Orion",
+    mag: 1.64,
+    dist: "250 ly",
+    spectral: "B2 III (Blue Giant)",
+    temp: "22,000 K",
+    radius: "~5.7x Sun",
+    lore: "Known since medieval times as the 'Amazon Star', marking the cosmic hunter's left shoulder. It is a massive B-type giant that will eventually shed its outer layers as a white dwarf.",
+    planets: [
+      { name: "Solar System (Mercury through Neptune)", desc: "Visible across all orbital planes in our Solar System." },
+      { name: "Wolf 359 System (7.8 ly)", desc: "Seen high above the planetary orbital plane, guiding orientation." },
+      { name: "Gliese 876 Worlds (15.2 ly)", desc: "Visible to the 4 gas giant and super-Earth planets in this multi-planet system." }
+    ]
+  },
+  "Alnitak": {
+    constellation: "Orion",
+    mag: 1.74,
+    dist: "1,260 ly",
+    spectral: "O9.7 Ib (Blue Supergiant)",
+    temp: "29,500 K",
+    radius: "~20x Sun",
+    lore: "The easternmost star of Orion's Belt. Its intense ultraviolet radiation energizes the famous IC 434 emission region that silhouettes the iconic Horsehead Nebula.",
+    planets: [
+      { name: "Solar System Planets", desc: "Forms the iconic three-star belt easily visible from Earth and Mars." },
+      { name: "Barnard's Star b (6.0 ly)", desc: "Visible in the southern celestial hemisphere of this close red dwarf neighbor." },
+      { name: "LHS 1140 b (49 ly)", desc: "Due to Alnitak's extreme distance (1,260 ly), it remains an unmistakable belt star even 50 light-years from Earth." }
+    ]
+  },
+  "Alnilam": {
+    constellation: "Orion",
+    mag: 1.69,
+    dist: "2,000 ly",
+    spectral: "B0 Ia (Blue Supergiant)",
+    temp: "27,500 K",
+    radius: "~42x Sun",
+    lore: "The central jewel of Orion's Belt. One of the 57 navigational stars used historically by maritime and aerospace navigators across Earth.",
+    planets: [
+      { name: "Inner & Outer Solar Planets", desc: "Visible from all planets with dark skies." },
+      { name: "Kepler-186f (580 ly)", desc: "Visible from the Kepler-186 system, though the belt orientation is skewed by ~15 degrees of parallax." }
+    ]
+  },
+  "Mintaka": {
+    constellation: "Orion",
+    mag: 2.25,
+    dist: "1,200 ly",
+    spectral: "O9.5 II (Bright Giant)",
+    temp: "31,800 K",
+    radius: "~16x Sun",
+    lore: "The westernmost belt star, positioned virtually on the celestial equator, allowing it to be seen equally well from both Earth's North and South poles.",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Serves as a celestial landmark visible equally across both hemispheres." },
+      { name: "Proxima Centauri System (4.2 ly)", desc: "Perfect line of sight; completes the three-star belt in Proxima's night sky." }
+    ]
+  },
+  "Saiph": {
+    constellation: "Orion",
+    mag: 2.07,
+    dist: "650 ly",
+    spectral: "B0.5 Ia (Supergiant)",
+    temp: "26,500 K",
+    radius: "~22x Sun",
+    lore: "The right foot of Orion, balancing Rigel across the southern base. Emits the vast majority of its luminosity in invisible ultraviolet light.",
+    planets: [
+      { name: "Solar System", desc: "Visible from Earth, Mars, and Jupiter's icy moons." },
+      { name: "Tau Ceti System", desc: "Clearly visible as the southern base of the hunter." }
+    ]
+  },
+
+  // Ursa Major
+  "Dubhe": {
+    constellation: "Ursa Major",
+    mag: 1.79,
+    dist: "123 ly",
+    spectral: "K0 III (Orange Giant)",
+    temp: "4,660 K",
+    radius: "~30x Sun",
+    lore: "The upper pointer star of the Big Dipper bowl. Drawing a straight line through Merak and Dubhe points directly towards Polaris.",
+    planets: [
+      { name: "Earth & Mars", desc: "Circumpolar star for northern observers on Earth and Mars; never sets below the horizon in northern latitudes." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "Visible in the deep northern sky, though because Ursa Major is closer (123 ly), Dubhe exhibits ~2° of parallax shift." },
+      { name: "Kepler-452b (1,400 ly)", desc: "From deep in the Cygnus arm, Dubhe merges into the general Milky Way background." }
+    ]
+  },
+  "Merak": {
+    constellation: "Ursa Major",
+    mag: 2.37,
+    dist: "79 ly",
+    spectral: "A1 V (White)",
+    temp: "9,350 K",
+    radius: "~3.0x Sun",
+    lore: "The lower pointer star of the Big Dipper. Merak possesses a circumstellar dust disk similar to Vega, indicating active cometary or debris collisions.",
+    planets: [
+      { name: "Solar System", desc: "Visible from all worlds in our solar system." },
+      { name: "Barnard's Star (6 ly)", desc: "Points toward the northern celestial pole from Barnard's planetary system." }
+    ]
+  },
+  "Phecda": {
+    constellation: "Ursa Major",
+    mag: 2.44,
+    dist: "83 ly",
+    spectral: "A0 V (White)",
+    temp: "9,500 K",
+    radius: "~3.0x Sun",
+    lore: "Forms the bottom-inner corner of the Big Dipper bowl. Part of the Ursa Major Moving Group of stars born together ~300 million years ago.",
+    planets: [
+      { name: "Earth, Venus, Mars", desc: "Prominent northern asterism star." },
+      { name: "Tau Ceti System", desc: "Visible with high clarity in Tau Ceti's northern hemisphere." }
+    ]
+  },
+  "Megrez": {
+    constellation: "Ursa Major",
+    mag: 3.32,
+    dist: "80 ly",
+    spectral: "A3 V (White)",
+    temp: "8,600 K",
+    radius: "~2.0x Sun",
+    lore: "The faintest of the seven Dipper stars, acting as the hinge connecting the bowl to the handle.",
+    planets: [
+      { name: "Solar System Planets", desc: "Easily visible under dark skies from Earth, Mars, and Saturn." },
+      { name: "Ross 128 b", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Alioth": {
+    constellation: "Ursa Major",
+    mag: 1.76,
+    dist: "82 ly",
+    spectral: "A1 III-IV (White)",
+    temp: "9,000 K",
+    radius: "~4.1x Sun",
+    lore: "The brightest star in Ursa Major. It features an intensely strong magnetic field that stratifies chemical elements across its spinning surface.",
+    planets: [
+      { name: "Earth & Mars", desc: "Dominant navigational beacon in northern skies." },
+      { name: "Epsilon Eridani b", desc: "Visible with naked-eye clarity." }
+    ]
+  },
+  "Mizar": {
+    constellation: "Ursa Major",
+    mag: 2.23,
+    dist: "83 ly",
+    spectral: "A2 V (White)",
+    temp: "9,000 K",
+    radius: "~2.4x Sun",
+    lore: "Ancient naked-eye eyesight test paired with Alcor. Historically the first telescopic binary (1650) and first spectroscopic binary ever discovered.",
+    planets: [
+      { name: "Earth, Moon & Mars", desc: "Famous test of optical resolution for observers with transparent skies." },
+      { name: "Proxima Centauri b", desc: "Mizar and Alcor are cleanly resolved into separate stars from Proxima b's skies." }
+    ]
+  },
+  "Alkaid": {
+    constellation: "Ursa Major",
+    mag: 1.85,
+    dist: "103 ly",
+    spectral: "B3 V (Blue-White)",
+    temp: "15,500 K",
+    radius: "~3.4x Sun",
+    lore: "The tip of the Dipper's handle. Unlike most other Dipper stars, Alkaid is not part of the moving group and is traveling through space in an independent direction.",
+    planets: [
+      { name: "Solar System", desc: "Guides stargazers through the 'arc to Arcturus'." },
+      { name: "Tau Ceti System", desc: "Visible in Tau Ceti's northern celestial quadrant." }
+    ]
+  },
+
+  // Cassiopeia
+  "Caph": {
+    constellation: "Cassiopeia",
+    mag: 2.28,
+    dist: "55 ly",
+    spectral: "F2 III (Yellow-White)",
+    temp: "7,000 K",
+    radius: "~3.5x Sun",
+    lore: "Westernmost star of the celestial 'W'. It lies almost directly on the zero-hour line of Right Ascension, used by astronomers to calibrate sky coordinates.",
+    planets: [
+      { name: "Earth, Mars, Jupiter", desc: "Circumpolar beacon in mid-to-high northern latitudes." },
+      { name: "Proxima Centauri System", desc: "From Proxima Centauri, our Sun actually appears inside Cassiopeia as a 0.5 magnitude star, turning the 'W' into a zig-zag '/\/\/' pattern!" }
+    ]
+  },
+  "Schedar": {
+    constellation: "Cassiopeia",
+    mag: 2.24,
+    dist: "228 ly",
+    spectral: "K0 IIIa (Orange Giant)",
+    temp: "4,500 K",
+    radius: "~42x Sun",
+    lore: "The luminous orange heart of the Queen. Schedar has exhausted its core hydrogen fuel and expanded dramatically into giant maturity.",
+    planets: [
+      { name: "Solar System Planets", desc: "Distinctive warm orange hue against northern stars." },
+      { name: "Barnard's Star System", desc: "Visible alongside the Sun in northern skies." }
+    ]
+  },
+  "Gamma Cas": {
+    constellation: "Cassiopeia",
+    mag: 2.15,
+    dist: "550 ly",
+    spectral: "B0.5 IVe (Blue Variable)",
+    temp: "25,000 K",
+    radius: "~10x Sun",
+    lore: "The central peak of the 'W'. It rotates at a blistering 430 km/s (near its breakup speed), hurling an equatorial disk of glowing plasma into surrounding space.",
+    planets: [
+      { name: "Solar System", desc: "Visible with erratic brightening flares." },
+      { name: "TRAPPIST-1 System", desc: "Visible during night-side observations." }
+    ]
+  },
+  "Ruchbah": {
+    constellation: "Cassiopeia",
+    mag: 2.68,
+    dist: "99 ly",
+    spectral: "A5 V (White)",
+    temp: "8,400 K",
+    radius: "~3.9x Sun",
+    lore: "The Queen's knee; an eclipsing binary star system with subtle periodic dips in brightness every 759 days.",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Visible across all northern observing sites." },
+      { name: "Tau Ceti System", desc: "Clearly visible in the northern sky." }
+    ]
+  },
+  "Segin": {
+    constellation: "Cassiopeia",
+    mag: 3.35,
+    dist: "460 ly",
+    spectral: "B3 III (Blue Giant)",
+    temp: "15,000 K",
+    radius: "~6.0x Sun",
+    lore: "The easternmost star of the 'W'. A young, hot helium-burning giant star rapidly expending its core reserves.",
+    planets: [
+      { name: "Solar System", desc: "Marks the eastern boundary of Cassiopeia." },
+      { name: "Wolf 359 System", desc: "Visible in dark unpolluted skies." }
+    ]
+  },
+
+  // Cygnus
+  "Deneb": {
+    constellation: "Cygnus",
+    mag: 1.25,
+    dist: "2,615 ly",
+    spectral: "A2 Ia (White Supergiant)",
+    temp: "8,500 K",
+    radius: "~200x Sun",
+    lore: "The tail of the Swan; one of the most distant and intrinsically luminous stars visible to human eyes. If Deneb were as close as Sirius, it would cast noticeable shadows on Earth at night!",
+    planets: [
+      { name: "Earth & All Solar System Worlds", desc: "Anchors the Summer Triangle alongside Vega and Altair." },
+      { name: "Proxima Centauri b", desc: "Due to Deneb's extreme distance (2,600+ ly), it appears in the exact same spot and brightness from all nearby stars." },
+      { name: "Kepler-22b (600 ly)", desc: "From Kepler-22b's ocean world, Deneb shines nearly 20 times brighter than it does from Earth!" }
+    ]
+  },
+  "Sadr": {
+    constellation: "Cygnus",
+    mag: 2.23,
+    dist: "1,800 ly",
+    spectral: "F8 Ib (Supergiant)",
+    temp: "6,500 K",
+    radius: "~150x Sun",
+    lore: "The chest of the Swan; sits directly at the center of the Northern Cross, surrounded by the glowing hydrogen gas of the diffuse Gamma Cygni Nebula.",
+    planets: [
+      { name: "Solar System Worlds", desc: "Visible embedded in the shimmering Milky Way galactic plane." },
+      { name: "Epsilon Eridani b", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Albireo": {
+    constellation: "Cygnus",
+    mag: 3.05,
+    dist: "430 ly",
+    spectral: "K2 II + B8 V (Gold & Blue)",
+    temp: "4,400 K / 12,000 K",
+    radius: "~60x Sun",
+    lore: "The beak of the Swan; world-famous for its breathtaking contrast through small telescopes—a topaz-gold giant star paired with an electric sapphire companion.",
+    planets: [
+      { name: "Earth & Mars", desc: "One of the most cherished visual targets for planetary astronomers." },
+      { name: "Tau Ceti System", desc: "Resolvable with moderate optical magnification." }
+    ]
+  },
+  "Gienah": {
+    constellation: "Cygnus",
+    mag: 2.48,
+    dist: "73 ly",
+    spectral: "K0 III (Giant)",
+    temp: "4,700 K",
+    radius: "~11x Sun",
+    lore: "The eastern wing of the cosmic swan, gliding gracefully across the northern summer sky.",
+    planets: [
+      { name: "Solar System", desc: "Clearly visible with naked eyes." },
+      { name: "Ross 128 b", desc: "Visible as a prominent wing star." }
+    ]
+  },
+  "Fawaris": {
+    constellation: "Cygnus",
+    mag: 2.86,
+    dist: "165 ly",
+    spectral: "B9.5 III (Blue-White)",
+    temp: "10,000 K",
+    radius: "~4.5x Sun",
+    lore: "The western wingtip of the Swan, also known as Delta Cygni. It is a triple-star system with a high-speed rotational axis.",
+    planets: [
+      { name: "Solar System", desc: "Visible across all northern skies." },
+      { name: "Barnard's Star System", desc: "Clear line of sight." }
+    ]
+  },
+
+  // Canis Major
+  "Sirius": {
+    constellation: "Canis Major",
+    mag: -1.46,
+    dist: "8.6 ly",
+    spectral: "A1 V (Bright White)",
+    temp: "9,940 K",
+    radius: "~1.7x Sun",
+    lore: "The 'Dog Star' and the brightest star in Earth's entire night sky. At just 8.6 light-years away, it is orbited by 'The Pup' (Sirius B), the first white dwarf star ever discovered.",
+    planets: [
+      { name: "Earth, Mars, Europa", desc: "Blazes with incredible dazzling brightness (-1.46 mag), casting faint shadows under pristine mountain skies." },
+      { name: "Proxima Centauri b (4.2 ly)", desc: "From Proxima b, Sirius is the brightest star in the sky (mag -1.7), situated near the celestial equator!" },
+      { name: "Tau Ceti System (11.9 ly)", desc: "Visible with intense brilliance only 7.8 light-years away." },
+      { name: "Ross 128 b (11.0 ly)", desc: "Extremely close neighbor at only 6.4 light-years distance, blazing as an ultra-bright beacon." }
+    ]
+  },
+  "Mirzam": {
+    constellation: "Canis Major",
+    mag: 1.98,
+    dist: "500 ly",
+    spectral: "B1 II-III (Blue Giant)",
+    temp: "25,000 K",
+    radius: "~9.7x Sun",
+    lore: "The 'Announcer' star, so named by ancient Arabian astronomers because it rises just minutes before Sirius, heralded by desert travelers.",
+    planets: [
+      { name: "Solar System", desc: "Visible preceding Sirius across the southern sky." },
+      { name: "Wolf 359 System", desc: "Visible in dark night conditions." }
+    ]
+  },
+  "Wezen": {
+    constellation: "Canis Major",
+    mag: 1.83,
+    dist: "1,600 ly",
+    spectral: "F8 Ia (Supergiant)",
+    temp: "6,400 K",
+    radius: "~215x Sun",
+    lore: "The rump of the Great Dog; a colossal yellow-white supergiant. If placed in our Solar System, its surface would extend almost to Earth's orbit!",
+    planets: [
+      { name: "Solar System", desc: "Visible with naked-eye clarity despite its vast 1,600 ly distance." },
+      { name: "Proxima Centauri System", desc: "Unobstructed line of sight." }
+    ]
+  },
+  "Adhara": {
+    constellation: "Canis Major",
+    mag: 1.50,
+    dist: "430 ly",
+    spectral: "B2 II (Blue Bright Giant)",
+    temp: "22,000 K",
+    radius: "~14x Sun",
+    lore: "Roughly 4.7 million years ago, Adhara passed within 34 light-years of our Solar System, becoming the single brightest star in Earth's sky at an astonishing magnitude of -3.99 (as bright as Venus)!",
+    planets: [
+      { name: "Earth & Solar Planets", desc: "Second brightest star in Canis Major." },
+      { name: "Tau Ceti System", desc: "Visible with high luminosity." }
+    ]
+  },
+  "Aludra": {
+    constellation: "Canis Major",
+    mag: 2.45,
+    dist: "2,000 ly",
+    spectral: "B5 Ia (Blue Supergiant)",
+    temp: "13,500 K",
+    radius: "~54x Sun",
+    lore: "The tip of the dog's tail; a massive luminous supergiant nearing the end of its life, shedding matter at high velocity and destined to explode as a supernova.",
+    planets: [
+      { name: "Solar System", desc: "Visible in the southern celestial sky." },
+      { name: "Barnard's Star System", desc: "Unobstructed line of sight." }
+    ]
+  }
+};
+
+function populateStarFilter() {
+  const conSelect = document.getElementById('constellation-filter');
+  const starSelect = document.getElementById('star-filter');
+  const selectedCon = conSelect.value;
+
+  starSelect.innerHTML = '';
+  Object.keys(starDetailsData).forEach(starName => {
+    if (starDetailsData[starName].constellation === selectedCon) {
+      const opt = document.createElement('option');
+      opt.value = starName;
+      opt.textContent = starName;
+      starSelect.appendChild(opt);
+    }
+  });
+
+  renderStarCard();
+}
+
+function renderStarCard() {
+  const starName = document.getElementById('star-filter').value;
+  const data = starDetailsData[starName];
+  const card = document.getElementById('star-detail-card');
+
+  if (!data) return;
+
+  let planetsHtml = data.planets.map(p => `
+    <div style="margin-bottom: 10px; padding: 10px 14px; background: #ffffff; border-radius: 8px; border-left: 3px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+      <strong style="color: #1e3a8a; font-size: 14px;">🪐 ${p.name}:</strong>
+      <p style="margin: 4px 0 0 0; font-size: 13.5px; color: #475569; line-height: 1.5;">${p.desc}</p>
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+      <div>
+        <h3 style="margin: 0; color: #0f172a; font-size: 20px;">⭐ ${starName}</h3>
+        <span style="font-size: 13px; color: #64748b; font-weight: 500;">Constellation: ${data.constellation}</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #e0f2fe; color: #0369a1;">Mag: ${data.mag}</span>
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #fef3c7; color: #b45309;">Dist: ${data.dist}</span>
+        <span style="padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #f3e8ff; color: #7e22ce;">Temp: ${data.temp}</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 18px;">
+      <div style="padding: 12px; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;">Spectral Classification</div>
+        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px;">${data.spectral}</div>
+      </div>
+      <div style="padding: 12px; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;">Estimated Radius</div>
+        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px;">${data.radius}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h4 style="margin: 0 0 6px 0; color: #334155; font-size: 14px; font-weight: 700; text-transform: uppercase;">📜 Astronomical & Mythological Lore</h4>
+      <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #475569;">${data.lore}</p>
+    </div>
+
+    <div>
+      <h4 style="margin: 0 0 10px 0; color: #1e3a8a; font-size: 14px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px;">
+        <span>🌍</span> Planets & Worlds That Can See This Constellation
+      </h4>
+      <div>${planetsHtml}</div>
+    </div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('constellation-filter').addEventListener('change', populateStarFilter);
+  document.getElementById('star-filter').addEventListener('change', renderStarCard);
+  populateStarFilter();
+});
+</script>
 ```

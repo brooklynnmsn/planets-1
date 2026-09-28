@@ -14,7 +14,7 @@
     </linearGradient>
   </defs>
 
-  <g opacity="0.4">
+  <g opacity="0.18">
     <!-- Saturn -->
     <g transform="translate(70, 70)">
       <ellipse cx="0" cy="0" rx="18" ry="5.5" fill="none" stroke="url(#bgSaturnRing)" stroke-width="2.5" transform="rotate(-20)" stroke-dasharray="36 36" stroke-dashoffset="18"/>

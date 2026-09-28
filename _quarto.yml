@@ -13,11 +13,14 @@ website:
         text: "Star Similarities"
       - href: constellations.qmd
         text: "Constellations"
+      - href: compare.qmd
+        text: "Planet vs Star"
       - href: story.qmd
         text: "The Story & About"
 
 format:
   html:
+    theme: cosmo
     css: styles.css
     resources:
       - images/
