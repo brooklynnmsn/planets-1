@@ -9,6 +9,25 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 20px;
+  background-image: url("planets-bg.svg");
+  background-repeat: repeat;
+  background-size: 360px 360px;
+  animation: scrollPlanets 50s linear infinite;
+}
+
+@keyframes scrollPlanets {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 360px 360px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
 }
 
 h1, h2, h3, .title {

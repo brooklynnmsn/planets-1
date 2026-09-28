@@ -12,6 +12,8 @@ format:
       - planet_graph.js
       - similarity.js
       - stars_traits.json
+      - cartoon-planets-border.svg
+      - planets-bg.svg
 ---
 
 ::: {.columns}
